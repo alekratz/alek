@@ -1,16 +1,19 @@
 ARCH=arm-none-eabi
 CXX=$(ARCH)-g++
 AS=$(ARCH)-as
+OBJCOPY=$(ARCH)-objcopy
 
 SRC_DIR=src
 BUILD_DIR=build/$(CONFIGURATION)
+IMAGE=boot/kernel.img
 TARGET=kernel.elf
 # Libraries used by this project
 LIBS=
 
 override COMPILE_FLAGS+=-Wall -c --std=c++11 -MP -MMD -ffreestanding -nostdlib \
-	-fno-builtin -fno-rtti -fno-exceptions -nostartfiles -O2
-override LINK_FLAGS+=
+	-fno-builtin -fno-rtti -fno-exceptions -nostartfiles -O2 -mfpu=vfp -mfloat-abi=hard \
+	-march=armv6zk -mtune=arm1176jzf-s
+override LINK_FLAGS+=-nostdlib -nostartfiles -Ofast
 
 print-%: ; @echo $*=$($*)
 
@@ -35,41 +38,47 @@ debug: export CONFIGURATION=debug
 debug: export COMPILE_FLAGS=-g -DDEBUG
 debug: dirs
 	@mkdir -p $(BUILD_DIR)
-	@$(MAKE) $(TARGET) --no-print-directory
+	@echo "Starting debug build"
+	@$(MAKE) $(IMAGE) --no-print-directory
 	
 release: export CONFIGURATION=release
 # -O2, or whatever optimization preferences you have
-release: export COMPILE_FLAGS=-O2 -DNDEBUG
+release: export COMPILE_FLAGS=-DNDEBUG
 release: dirs
 	@mkdir -p $(BUILD_DIR)
-	@$(MAKE) $(TARGET) --no-print-directory
+	@echo "Starting release build"
+	@$(MAKE) $(IMAGE) --no-print-directory
+
+$(IMAGE): $(TARGET)
+	@echo "[ OBJCOPY ] $(TARGET) -> $(IMAGE)"
+	@$(OBJCOPY) $(TARGET) -O binary $(IMAGE)
 
 # Target symlink
-$(TARGET) : $(BUILD_DIR)/$(TARGET)
+$(TARGET): $(BUILD_DIR)/$(TARGET)
 	@echo "[ LN ] $(BUILD_DIR)/$(TARGET) -> $(TARGET)"
 	@rm -f $(TARGET)
 	@ln -s $(BUILD_DIR)/$(TARGET) $(TARGET)
 
 # Linking the project together
-$(BUILD_DIR)/$(TARGET) : $(O_FILES)
-	@echo "[ CXX ] $(notdir $(O_FILES)) -> $(BUILD_DIR)/$(TARGET)"
-	@$(CXX) $(LINK_FLAGS) $(O_FILES) -o $(BUILD_DIR)/$(TARGET)
+$(BUILD_DIR)/$(TARGET): $(O_FILES) $(SRC_DIR)/linker.ld
+	@echo "[ LD ] $(notdir $(O_FILES)) -> $(BUILD_DIR)/$(TARGET)"
+	@$(CXX) $(LINK_FLAGS) $(O_FILES) -T $(SRC_DIR)/linker.ld -o $(BUILD_DIR)/$(TARGET)
 
 # Directories needed
 # TODO : figure out how to remove duplicates from this list
-dirs :
+dirs:
 	@mkdir -p $(O_DIRS)
 
 # Dependencies
 -include $(DEP_FILES)
 
 # Compiling the assembly
-$(BUILD_DIR)/%.o : $(SRC_DIR)/%.$(ASM_EXT)
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.$(ASM_EXT)
 	@echo "[ AS ] $(notdir $<) -> $(notdir $@)"
 	@$(AS) $(AS_FLAGS) $< -o $@
 
 # Compiling the C++ sources
-$(BUILD_DIR)/%.o : $(SRC_DIR)/%.$(CXX_EXT)
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.$(CXX_EXT)
 	@echo "[ CXX ] $(notdir $<) -> $(notdir $@)"
 	@$(CXX) $(COMPILE_FLAGS) $< -o $@
 
