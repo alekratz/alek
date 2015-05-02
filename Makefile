@@ -84,5 +84,5 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.$(CXX_EXT)
 
 .PHONY: clean
 clean:
-	rm -f $(TARGET)
+	rm -f $(TARGET) $(IMAGE)
 	rm -rf $(BUILD_DIR)
