@@ -67,7 +67,7 @@ $(BUILD_DIR)/$(TARGET): $(O_FILES) $(SRC_DIR)/linker.ld
 # Directories needed
 # TODO : figure out how to remove duplicates from this list
 dirs:
-	@mkdir -p $(O_DIRS)
+	@mkdir -p $(O_DIRS) boot
 
 # Dependencies
 -include $(DEP_FILES)
