@@ -1,8 +1,5 @@
 #ifndef AAA_MAILBOX_H
 #define AAA_MAILBOX_H
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 #include "types.h"
 
@@ -21,7 +18,4 @@ result_t write_mailbox(u32 value, u8 chan);
  */
 u32 read_mailbox(u8 chan);
 
-#ifdef __cplusplus
-}
-#endif /* extern C */
 #endif /* AAA_MAILBOX_H */
