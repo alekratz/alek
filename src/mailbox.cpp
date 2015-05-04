@@ -25,8 +25,8 @@ result_t write_mailbox(u32 value, u8 chan)
   if(chan > 6) return R_FAIL;
   // wait to write data
   while(get32((void*)MailboxAddr::Status) & MAILBOX_FULL);
-  mem_barrier();
   put32((void*)(MailboxAddr::Write), value | chan);
+  mem_barrier();
   return R_OK;
 }
 
