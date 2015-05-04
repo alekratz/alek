@@ -10,6 +10,8 @@ extern "C" {
 volatile void put32(void* addr, u32 val);
 volatile u32  get32(void* addr);
 
+void mem_barrier();
+
 #ifdef __cplusplus
 }
 #endif
