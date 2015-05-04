@@ -1,5 +1,5 @@
-#ifndef MEM_H
-#define MEM_H
+#ifndef AAA_MEM_H
+#define AAA_MEM_H
 
 #include "types.h"
 
@@ -14,5 +14,5 @@ void mem_barrier();
 
 #ifdef __cplusplus
 }
-#endif
-#endif
+#endif /* extern C */
+#endif /* AAA_MEM_H */

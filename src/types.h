@@ -1,5 +1,5 @@
-#ifndef TYPES_H
-#define TYPES_H
+#ifndef AAA_TYPES_H
+#define AAA_TYPES_H
 
 typedef unsigned char   u8;
 typedef signed char     s8;
@@ -18,4 +18,4 @@ typedef s32 result_t;
 #define R_OK 0
 #define R_FAIL (-1)
 
-#endif
+#endif /* AAA_TYPES_H */

@@ -1,5 +1,5 @@
-#ifndef MAILBOX_H
-#define MAILBOX_H
+#ifndef AAA_MAILBOX_H
+#define AAA_MAILBOX_H
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -24,4 +24,4 @@ u32 read_mailbox(u8 chan);
 #ifdef __cplusplus
 }
 #endif /* extern C */
-#endif /* MAILBOX_H */
+#endif /* AAA_MAILBOX_H */
