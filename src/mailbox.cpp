@@ -22,6 +22,7 @@ result_t write_mailbox(u32 value, u8 chan)
   if(chan > 6) return R_FAIL;
   // wait to write data
   while(get32((void*)MailboxAddr::Status) & MAILBOX_FULL);
+  mem_barrier();
   put32((void*)(MailboxAddr::Write), value | chan);
   return R_OK;
 }
@@ -31,7 +32,9 @@ u32 read_mailbox(u8 chan)
   u32 value;
   for(;;)
   {
+    // wait for something to exist in the mailbox
     while(get32((void*)MailboxAddr::Status) & MAILBOX_EMPTY);
+    mem_barrier();
     value = get32((void*)MailboxAddr::Read);
     u8 rchan = value & 0xf;
     if(rchan == chan)
