@@ -37,3 +37,5 @@ GPL v3
 #Sources
 [Building the GNU ARM Toolchain for Bare Metal](http://kunen.org/uC/gnu_tool.html) - For building the ARM toolchain
 [raspbootin](https://github.com/mrvn/raspbootin) - For booting over serial
+[OSDev Wiki - Raspberry Pi Bare Bones](http://wiki.osdev.org/ARM_RaspberryPi_Tutorial_C) - Useful for the UART stuff. Basic source code for the UART interface.
+[dwelch67's baremetal Raspberry Pi programs](https://github.com/dwelch67/raspberrypi) - A healthy collection of bare-metal programs written for the Raspberry Pi, exploring different topics.
