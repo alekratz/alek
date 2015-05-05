@@ -10,7 +10,7 @@ TARGET=kernel.elf
 # Libraries used by this project
 LIBS=
 
-override COMPILE_FLAGS+=-Wall -c --std=c++11 -MP -MMD -ffreestanding -nostdlib \
+override COMPILE_FLAGS+=-Wall -c --std=c++14 -MP -MMD -ffreestanding -nostdlib \
 	-fno-builtin -fno-rtti -fno-exceptions -nostartfiles -O2 -mfpu=vfp -mfloat-abi=hard \
 	-march=armv6zk -mtune=arm1176jzf-s
 override LINK_FLAGS+=-nostdlib -nostartfiles -Ofast
