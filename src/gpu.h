@@ -28,6 +28,6 @@ public:
 };
 
 extern FramebufferInfo *fb_info;
-void init_framebuffer();
+result_t init_framebuffer();
 
 #endif

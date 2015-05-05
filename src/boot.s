@@ -2,7 +2,7 @@
 .extern kmain
 
 init:
-  mov sp,#0x80000
+  mov sp,#0x8000
   bl kmain
   b hang$
 hang$:
