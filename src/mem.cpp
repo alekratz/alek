@@ -1,11 +1,11 @@
 #include "mem.h"
 
-volatile void put32(void* addr, u32 val)
+volatile void put32(addr_t addr, u32 val)
 {
   *(volatile u32*)addr = val;
 }
 
-volatile u32  get32(void* addr)
+volatile u32  get32(addr_t addr)
 {
   return *(volatile u32*)addr;
 }

@@ -7,8 +7,8 @@
 extern "C" {
 #endif
 
-volatile void put32(void* addr, u32 val);
-volatile u32  get32(void* addr);
+volatile void put32(addr_t addr, u32 val);
+volatile u32  get32(addr_t addr);
 
 void mem_barrier();
 
