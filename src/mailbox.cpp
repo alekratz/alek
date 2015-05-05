@@ -2,6 +2,9 @@
 #include "types.h"
 #include "mem.h"
 
+// assert that u32s are the same size as addr_ts
+static_assert(sizeof(u32) == sizeof(addr_t), "Address type is not the same size as u32");
+
 enum class MailboxAddr : u32
 {
   Base=0x2000B880,
