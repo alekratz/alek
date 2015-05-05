@@ -39,6 +39,6 @@ enum UART0IntMasks
   CTSMIM  = 1 << 1    // nUARTCTS modem interrupt mask
 };
 
-result_t uart_init();
+result_t uart_init(u32 baud);
 
 #endif

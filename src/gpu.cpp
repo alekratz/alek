@@ -2,6 +2,10 @@
 #include "types.h"
 #include "mailbox.h"
 
+// Actual definition of FramebufferInfo here. However, what it /points/ to
+// is perpetually on the stack. Specifically, kmain's stack.
+FramebufferInfo *fb_info = nullptr;
+
 Graphics::Graphics()
 {
 
@@ -12,9 +16,7 @@ Graphics::~Graphics()
 
 }
 
-FramebufferInfo *fb_info = nullptr;
-
-result_t framebuffer_init()
+result_t framebuffer_init(FramebufferInfo *fb_info)
 {
   fb_info = (FramebufferInfo*)FB_BASE_ADDR;
   *fb_info = FramebufferInfo(); // initialize to the default values
