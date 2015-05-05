@@ -29,37 +29,18 @@ if [[ $# -gt 0 ]]; then
 	done
 fi
 
-OUTPUT=rpi-image.img
-OUTPUTSIZEmb=34
 BOOTDIR=boot
-
-# Do some math based on the output size
-OUTPUTSIZEb=$(( $OUTPUTSIZEmb * 1024 * 1024 ))
-OUTPUTCYLINDERS=$(( $OUTPUTSIZEb / 255 / 63 / 512 ))
-OUTPUTBLOCKCOUNT=$(( $OUTPUTSIZEmb * 1024 * 1024 ))
-OUTPUTBLOCKCOUNT=$(( $OUTPUTBLOCKCOUNT / 512 ))
-
-vecho "OUTPUTSIZEb: $OUTPUTSIZEb"
-vecho "OUTPUTCYLINDERS: $OUTPUTCYLINDERS"
-vecho "OUTPUTBLOCKCOUNT: $OUTPUTBLOCKCOUNT"
-
-# Create/format the image for FAT32
-vecho "Creating $OUTPUT"
-dd bs=512 count=$OUTPUTBLOCKCOUNT if=/dev/zero of=$OUTPUT 2> /dev/null
-vecho "Formatting $OUTPUT"
-fdisk -L=never -b 512 -H 255 -S 63 -C $OUTPUTCYLINDERS $OUTPUT > /dev/null << EOF
-x
-c
-$OUTPUTCYLINDERS
-r
+IMG="rpi-image.img"
+vecho "Creating $IMG"
+dd bs=1M count=64 if=/dev/zero of=$IMG 2> /dev/null
+fdisk $IMG -L=never << EOF
 n
 p
 1
 
 
 t
-c
-
+b
 w
 EOF
 
@@ -70,29 +51,26 @@ if [[ $response =~ [nN][oO]|[nN] ]]; then
 fi
 
 vecho "Mounting image"
-DEVFILE=".device"
 MOUNTDIR="mount"
 mkdir $MOUNTDIR
 
 # for some reason we have to forward EOF to sudo. why
 echo -e "\0" | HOME=$PWD sudo -E -A -H bash<< EOF
-	losetup --show -o $((63*512)) -f $OUTPUT > $DEVFILE || exit 1
-	device=\$(cat $DEVFILE)
-	rm $DEVFILE
-	#echo "opened device \$device"
-	mkfs.msdos -F 32 \$device
-	mount -o loop,offset=$((63*512)) $OUTPUT $MOUNTDIR
+	device=\$(losetup --show -P -f $IMG) || exit 1
+	devicepart=\${device}p1
+	mkfs.vfat \$devicepart
+	mount \$devicepart $MOUNTDIR
 	if [[ -n "$verbose" ]]; then echo "Copying files"; fi
 	cp $BOOTDIR/* $MOUNTDIR
+	sync
 	umount $MOUNTDIR
 	rmdir $MOUNTDIR
-	#echo "closing device \$device"
 	losetup -d \$device
 EOF
 
 if [[ $? == 1 ]]; then
 	echo "ERROR: Failed to open device."
-	rm -rf $DEVFILE $MOUNTDIR
+	rmdir $MOUNTDIR
 	exit 1
 fi
 
