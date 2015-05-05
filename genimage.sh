@@ -59,6 +59,7 @@ echo -e "\0" | HOME=$PWD sudo -E -A -H bash<< EOF
 	device=\$(losetup --show -P -f $IMG) || exit 1
 	devicepart=\${device}p1
 	mkfs.vfat \$devicepart
+	if [[ -n "$verbose" ]]; then echo "Mounting \$devicepart under $MOUNTDIR"; fi
 	mount \$devicepart $MOUNTDIR
 	if [[ -n "$verbose" ]]; then echo "Copying files"; fi
 	cp $BOOTDIR/* $MOUNTDIR
