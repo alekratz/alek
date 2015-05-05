@@ -2,7 +2,7 @@
 
 extern "C" void kmain()
 {
-  init_framebuffer();
+  framebuffer_init();
 
   // draw some stuff
   

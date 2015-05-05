@@ -14,7 +14,7 @@ Graphics::~Graphics()
 
 FramebufferInfo *fb_info = nullptr;
 
-result_t init_framebuffer()
+result_t framebuffer_init()
 {
   fb_info = (FramebufferInfo*)FB_BASE_ADDR;
   *fb_info = FramebufferInfo(); // initialize to the default values
