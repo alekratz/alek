@@ -5,7 +5,7 @@
 // assert that u32s are the same size as addr_ts
 static_assert(sizeof(u32) == sizeof(addr_t), "Address type is not the same size as u32");
 
-enum class MailboxAddr : u32
+enum MailboxAddr
 {
   Base=0x2000B880,
   Read=Base+0,        // 2000B880
