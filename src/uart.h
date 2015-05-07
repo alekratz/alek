@@ -40,5 +40,9 @@ enum UART0IntMasks
 };
 
 result_t uart_init(u32 baud);
+void uart_putc(char c);
+char uart_getc();
+void uart_write(const char* buf, size_t sz);
+void uart_puts(const char* buf);
 
 #endif

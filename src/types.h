@@ -27,6 +27,9 @@ typedef s32 result_t;
 #define R_OK 0
 #define R_FAIL (-1)
 
+// size_t
+typedef u32 size_t;
+
 typedef void* addr_t;
 
 #endif /* AAA_TYPES_H */
