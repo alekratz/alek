@@ -46,13 +46,13 @@ result_t uart_init(u32 baud)
 
 void uart_putc(char c)
 {
-  while(G32_I(UART0::FR) & (1 << 5));
+  while(G32_I(UART0::FR) & UART0FRMasks::TXFF);
   P32_I(UART0::DR, c);
 }
 
 char uart_getc()
 {
-  while(G32_I(UART0::FR) & (1 << 4));
+  while(G32_I(UART0::FR) & UART0FRMasks::RXFE);
   return G32_I(UART0::DR);
 }
 

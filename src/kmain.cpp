@@ -9,9 +9,15 @@ extern "C" void kmain()
   // initialize uart, and specifically, serial communication
   uart_init(115200);
   // initialize the framebuffer
-  framebuffer_init(&d_fb_info);
+  //framebuffer_init(&d_fb_info);
   // draw some stuff
   
+  uart_puts("Hello, from Kernel land!\r\n");
+  uart_puts("echo:\r\n");
+  
+  while(1)
+  {
+    uart_putc(uart_getc());
+  }
 
-  while(1);
 }

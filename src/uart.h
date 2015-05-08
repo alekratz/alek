@@ -27,6 +27,15 @@ enum UART0
   TDR     = Base + 0x8C
 };
 
+enum UART0FRMasks
+{
+  TXFE = 1 << 7,      // Transmit FIFO empty
+  RXFF = 1 << 6,      // Receive FIFO full
+  TXFF = 1 << 5,      // Transmit FIFO full
+  RXFE = 1 << 4,      // Receive FIFO empty
+  BUSY = 1 << 3       // UART device is busy transmitting data
+};
+
 enum UART0IntMasks
 {
   OEIM    = 1 << 10,  // Overrun error interrupt mask
