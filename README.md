@@ -1,4 +1,5 @@
-#AAA! Kernel - Alek's Awesome Arm Kernel
+#ALEK - Alek's Little Endian Kernel
+(formerly AAA! Kernel)
 Independent study Fall 2015
 
 #Building
