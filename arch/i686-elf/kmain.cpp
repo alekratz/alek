@@ -16,32 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with Alek's Little Endian Kernel.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
-#if defined(__arm__)
-#include "gpu.h"
-#include "uart.h"
-
-static FramebufferInfo d_fb_info; // forever version of framebufferinfo
-#endif
 
 extern "C" void kmain()
 {
-
-#if defined(__arm__)
-  // initialize uart, and specifically, serial communication
-  uart_init(115200);
-  // initialize the framebuffer
-  //framebuffer_init(&d_fb_info);
-  // draw some stuff
-  
-  uart_puts("Hello, from Kernel land!\r\n");
-  uart_puts("echo:\r\n");
-  
-  while(1)
-  {
-    uart_putc(uart_getc());
-  }
-#elif defined(__i386__)
   while(1);
-#endif
 }

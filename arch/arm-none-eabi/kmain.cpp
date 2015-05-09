@@ -17,17 +17,13 @@
  * along with Alek's Little Endian Kernel.  If not, see <http://www.gnu.org/licenses/>.
  */
  
-#if defined(__arm__)
 #include "gpu.h"
 #include "uart.h"
 
 static FramebufferInfo d_fb_info; // forever version of framebufferinfo
-#endif
 
 extern "C" void kmain()
 {
-
-#if defined(__arm__)
   // initialize uart, and specifically, serial communication
   uart_init(115200);
   // initialize the framebuffer
@@ -41,7 +37,4 @@ extern "C" void kmain()
   {
     uart_putc(uart_getc());
   }
-#elif defined(__i386__)
-  while(1);
-#endif
 }
