@@ -2,11 +2,11 @@ TARGET=kernel.img
 ELF=kernel.elf
 CORE_SRC_FILES:=$(shell find core -type f -name \*.s) \
 	$(shell find core -type f -name \*.cpp)
-CORE_O_FILES=$(addprefix $(BUILD_DIR)/,\
+CORE_O_FILES=$(addprefix $(BUILD_DIR)/core/,\
 	$(patsubst %.cpp,%.o,$(patsubst %.s,%.o,$(notdir $(CORE_SRC_FILES)))))
 ARCH_SRC_FILES:=$(shell find arch/$(ARCH) -type f -name \*.s) \
 	$(shell find arch/$(ARCH) -type f -name \*.cpp)
-ARCH_O_FILES=$(addprefix $(BUILD_DIR)/,\
+ARCH_O_FILES=$(addprefix $(BUILD_DIR)/arch/,\
 	$(patsubst %.cpp,%.o,$(patsubst %.s,%.o,$(notdir $(ARCH_SRC_FILES)))))
 O_FILES=$(CORE_O_FILES) $(ARCH_O_FILES)
 BUILD_DIR=build
@@ -38,12 +38,12 @@ $(ELF): arch core arch/$(ARCH)/link.ld
 .PHONY: core
 core: $(CORE_SRC_FILES)
 	@echo building core
-	@$(MAKE) -C core BUILD_DIR=../$(BUILD_DIR)
+	@$(MAKE) -C core BUILD_DIR=../$(BUILD_DIR)/core
 
 .PHONY: arch
 arch: $(ARCH_SRC_FILES)
 	@echo building $(ARCH)
-	@$(MAKE) -C arch BUILD_DIR=../$(BUILD_DIR)
+	@$(MAKE) -C arch BUILD_DIR=../$(BUILD_DIR)/arch
 
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
