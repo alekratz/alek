@@ -17,10 +17,10 @@
  * along with Alek's Awesome Arm Kernel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-.global init
+.global start
 .extern kmain
 
-init:
+start:
   mov sp,#0x8000
   bl kmain
   b hang$

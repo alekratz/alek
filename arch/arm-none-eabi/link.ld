@@ -17,7 +17,7 @@
  * along with Alek's Awesome Arm Kernel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-ENTRY(init)
+ENTRY(start)
 
 SECTIONS
 {
