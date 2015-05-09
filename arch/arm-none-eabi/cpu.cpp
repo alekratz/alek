@@ -17,7 +17,7 @@
  * along with Alek's Little Endian Kernel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <cpu.h>
+#include "cpu.h"
 
 volatile void cpu_delay(u32 count)
 {

@@ -17,7 +17,7 @@
  * along with Alek's Little Endian Kernel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <mem.h>
+#include "mem.h"
 
 void mem_barrier()
 {

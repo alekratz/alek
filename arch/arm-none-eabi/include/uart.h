@@ -20,8 +20,8 @@
 #ifndef ALEK_UART_H
 #define ALEK_UART_H
 
-#include <types.h>
-#include <periph.h>
+#include "types.h"
+#include "periph.h"
 
 enum UART0
 {

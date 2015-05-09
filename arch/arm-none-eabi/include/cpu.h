@@ -20,7 +20,7 @@
 #ifndef ALEK_CPU_H
 #define ALEK_CPU_H
 
-#include <types.h>
+#include "types.h"
 
 volatile void cpu_delay(u32 count);
 

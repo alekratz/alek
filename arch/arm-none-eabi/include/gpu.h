@@ -20,7 +20,7 @@
 #ifndef ALEK_GPU_H
 #define ALEK_GPU_H
 
-#include <types.h>
+#include "types.h"
 
 #define GPU_FLUSH_CACHE 0x40000000
 #define FB_BASE_ADDR 0x2000

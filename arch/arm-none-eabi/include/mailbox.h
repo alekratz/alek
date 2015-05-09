@@ -20,7 +20,7 @@
 #ifndef ALEK_MAILBOX_H
 #define ALEK_MAILBOX_H
 
-#include <types.h>
+#include "types.h"
 
 /**
  * Writes a 28-bit integer to the mailbox.

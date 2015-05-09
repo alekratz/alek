@@ -17,9 +17,9 @@
  * along with Alek's Little Endian Kernel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <mailbox.h>
-#include <types.h>
-#include <mem.h>
+#include "mailbox.h"
+#include "types.h"
+#include "mem.h"
 
 // assert that u32s are the same size as addr_ts
 static_assert(sizeof(u32) == sizeof(addr_t), "Address type is not the same size as u32");
