@@ -11,8 +11,11 @@ endif
 
 all: $(OBJS)
 
-$(BUILD_DIR)/%.o: $(ARCH)/%.cpp
+$(BUILD_DIR)/%.o: $(ARCH)/%.cpp | $(BUILD_DIR)
 	$(CXX) $(CXX_FLAGS) $< -o $@
 
-$(BUILD_DIR)/%.o: $(ARCH)/%.s
+$(BUILD_DIR)/%.o: $(ARCH)/%.s | $(BUILD_DIR)
 	$(AS) $(AS_FLAGS) $< -o $@
+
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
