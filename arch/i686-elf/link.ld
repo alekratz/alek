@@ -17,26 +17,45 @@
  * along with Alek's Awesome Arm Kernel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "mem.h"
+ENTRY(start)
 
-volatile void put32(addr_t addr, u32 val)
+SECTIONS
 {
-  *(volatile u32*)addr = val;
-}
+  /* Typical place for bootloaders to load a kernel up. */
+  . = 1M;
+  _start = .;
+  _text_start = .;
+  .text : {
+    *(.multiboot) /* Put the multiboot header, as it's required */
+    *(.text)
+  }
 
-volatile u32  get32(addr_t addr)
-{
-  return *(volatile u32*)addr;
-}
+  . = ALIGN(4096); /* align to page size */
+  _text_end = .;
+  _rodata_start = .;
+  .rodata : {
+    *(.rodata)
+  }
 
-#if defined(ARM)
-void mem_barrier()
-{
-  asm volatile("mov r3, #0");                   // The read register Should Be Zero before the call
-  asm volatile("mcr p15, 0, r3, C7, C6, 0");    // Invalidate Entire Data Cache
-  asm volatile("mcr p15, 0, r3, c7, c10, 0");   // Clean Entire Data Cache
-  asm volatile("mcr p15, 0, r3, c7, c14, 0");   // Clean and Invalidate Entire Data Cache
-  asm volatile("mcr p15, 0, r3, c7, c10, 4");   // Data Synchronization Barrier
-  asm volatile("mcr p15, 0, r3, c7, c10, 5");   // Data Memory Barrier
+  . = ALIGN(4096); /* align to page size */
+  _rodata_end = .;
+  _data_start = .;
+  .data : {
+    *(.data)
+  }
+  
+  . = ALIGN(4096); /* align to page size */
+  _data_end = .;
+  _bss_start = .;
+  .bss : {
+    bss = .;
+    *(COMMON)
+    *(.bss)
+    *(.bootstrap_stack)
+  }
+  
+  . = ALIGN(4096); /* align to page size */
+  _bss_end = .;
+  
+  _end = .;
 }
-#endif

@@ -17,14 +17,17 @@
  * along with Alek's Awesome Arm Kernel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#if defined(ARM)
 #include "gpu.h"
 #include "uart.h"
 
 static FramebufferInfo d_fb_info; // forever version of framebufferinfo
+#endif
 
 extern "C" void kmain()
 {
 
+#if defined(ARM)
   // initialize uart, and specifically, serial communication
   uart_init(115200);
   // initialize the framebuffer
@@ -38,5 +41,7 @@ extern "C" void kmain()
   {
     uart_putc(uart_getc());
   }
-
+#elif defined(I686)
+  while(1);
+#endif
 }
