@@ -17,8 +17,8 @@
  * along with Alek's Little Endian Kernel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef AAA_TYPES_H
-#define AAA_TYPES_H
+#ifndef ALEK_TYPES_H
+#define ALEK_TYPES_H
 
 typedef unsigned char       u8;
 typedef signed char         s8;
@@ -51,4 +51,4 @@ typedef u32 size_t;
 
 typedef void* addr_t;
 
-#endif /* AAA_TYPES_H */
+#endif /* ALEK_TYPES_H */

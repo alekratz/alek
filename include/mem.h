@@ -17,8 +17,8 @@
  * along with Alek's Little Endian Kernel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef AAA_MEM_H
-#define AAA_MEM_H
+#ifndef ALEK_MEM_H
+#define ALEK_MEM_H
 
 #include "types.h"
 
@@ -33,4 +33,4 @@ volatile u32  get32(addr_t addr);
 
 void mem_barrier();
 
-#endif /* AAA_MEM_H */
+#endif /* ALEK_MEM_H */

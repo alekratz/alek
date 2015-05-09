@@ -17,8 +17,8 @@
  * along with Alek's Little Endian Kernel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef AAA_STRING_H
-#define AAA_STRING_H
+#ifndef ALEK_STRING_H
+#define ALEK_STRING_H
 #include "types.h"
 
 inline size_t strlen(const char *buf)
