@@ -29,7 +29,7 @@ volatile u32  get32(addr_t addr)
   return *(volatile u32*)addr;
 }
 
-#if defined(ARM)
+#if defined(__arm__)
 void mem_barrier()
 {
   asm volatile("mov r3, #0");                   // The read register Should Be Zero before the call

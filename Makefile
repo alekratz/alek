@@ -19,9 +19,9 @@ export AS=$(ARCH)-as
 export OBJCOPY=$(ARCH)-objcopy
 
 ifeq ($(ARCH),i686-elf)
-	CXX_FLAGS+=-DI686
+	CXX_FLAGS+=
 else ifeq ($(ARCH),arm-none-eabi)
-	CXX_FLAGS+=-DARM -mfpu=vfp -mfloat-abi=hard -march=armv6zk -mtune=arm1176jzf-s
+	CXX_FLAGS+=-mfpu=vfp -mfloat-abi=hard -march=armv6zk -mtune=arm1176jzf-s
 endif
 
 print-%: ; @echo $*=$($*)
