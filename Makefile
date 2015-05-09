@@ -1,88 +1,53 @@
-ARCH=arm-none-eabi
-CXX=$(ARCH)-g++
-AS=$(ARCH)-as
-OBJCOPY=$(ARCH)-objcopy
+TARGET=kernel.img
+ELF=kernel.elf
+O_FILES=$(addprefix $(BUILD_DIR)/,$(patsubst %.s,%.o,$(notdir \
+	$(shell find arch/$(ARCH) -type f -name \*.s) \
+	$(shell find core -type f -name \*.s))) \
+	$(patsubst %.cpp,%.o,$(notdir \
+	$(shell find arch/$(ARCH) -type f -name \*.cpp) \
+	$(shell find core -type f -name \*.cpp))))
+BUILD_DIR=build
+export CXX_FLAGS=-I$(PWD)/include -I$(PWD)/arch/$(ARCH)/include -std=c++14 \
+	-ffreestanding -fno-builtin -fno-rtti -fno-exceptions -nostartfiles -O2 -c \
+	-Wall
+export LD_FLAGS=-nostartfiles -O2
+export CXX=$(ARCH)-g++
+export AS=$(ARCH)-as
+export OBJCOPY=$(ARCH)-objcopy
 
-SRC_DIR=src
-BUILD_DIR=build/$(CONFIGURATION)
-IMAGE=boot/kernel.img
-TARGET=kernel.elf
-# Libraries used by this project
-LIBS=
-
-override COMPILE_FLAGS+=-Wall -c --std=c++14 -MP -MMD -ffreestanding \
-	-fno-builtin -fno-rtti -fno-exceptions -nostartfiles -O2 -mfpu=vfp -mfloat-abi=hard \
-	-march=armv6zk -mtune=arm1176jzf-s
-override LINK_FLAGS+=-nostartfiles -O2
+ifeq ($(ARCH),i686-elf)
+	CXX_FLAGS+=-DI686
+else ifeq ($(ARCH),arm-none-eabi)
+	CXX_FLAGS+=-DARM -mfpu=vfp -mfloat-abi=hard -march=armv6zk -mtune=arm1176jzf-s
+endif
 
 print-%: ; @echo $*=$($*)
 
-# cpp, cxx, c, C, etc
-CXX_EXT=cpp
-ASM_EXT=s
+all: $(TARGET)
 
-# Files and directories
-CXX_SRC_FILES=$(shell find $(SRC_DIR) -name *.$(CXX_EXT) -type f) 
-ASM_SRC_FILES=$(shell find $(SRC_DIR) -name *.$(ASM_EXT) -type f)
-CXX_O_FILES=$(CXX_SRC_FILES:$(SRC_DIR)/%.$(CXX_EXT)=$(BUILD_DIR)/%.o)
-ASM_O_FILES=$(ASM_SRC_FILES:$(SRC_DIR)/%.$(ASM_EXT)=$(BUILD_DIR)/%.o)
-O_FILES=$(ASM_O_FILES) $(CXX_O_FILES)
-O_DIRS=$(dir $(O_FILES))
-DEP_FILES=$(O_FILES:.o=.d)
+$(TARGET): check-arch $(ELF)
+	$(OBJCOPY) $(ELF) -O binary $(TARGET)
 
-# To change the default 'make' action, set this to debug or release
-all : debug
+$(ELF): | $(BUILD_DIR)
+	@echo building kernel for $(ARCH)
+	@echo building $(ARCH) code
+	@$(MAKE) -C arch BUILD_DIR=../$(BUILD_DIR)
+	@echo building core code
+	@$(MAKE) -C core BUILD_DIR=../$(BUILD_DIR)
+	@echo linking $(ELF)
+	$(CXX) $(LD_FLAGS) $(O_FILES) -T arch/$(ARCH)/link.ld -o $(ELF)
 
-.PHONY: debug release
-debug: export CONFIGURATION=debug
-debug: export COMPILE_FLAGS=-g -DDEBUG
-debug: dirs
-	@mkdir -p $(BUILD_DIR)
-	@echo "Starting debug build"
-	@$(MAKE) $(IMAGE) --no-print-directory
-	
-release: export CONFIGURATION=release
-# -O2, or whatever optimization preferences you have
-release: export COMPILE_FLAGS=-DNDEBUG
-release: dirs
-	@mkdir -p $(BUILD_DIR)
-	@echo "Starting release build"
-	@$(MAKE) $(IMAGE) --no-print-directory
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
 
-$(IMAGE): $(TARGET)
-	@echo "[ OBJCOPY ] $(TARGET) -> $(IMAGE)"
-	@$(OBJCOPY) $(TARGET) -O binary $(IMAGE)
-
-# Target symlink
-$(TARGET): $(BUILD_DIR)/$(TARGET)
-	@echo "[ LN ] $(BUILD_DIR)/$(TARGET) -> $(TARGET)"
-	@rm -f $(TARGET)
-	@ln -s $(BUILD_DIR)/$(TARGET) $(TARGET)
-
-# Linking the project together
-$(BUILD_DIR)/$(TARGET): $(O_FILES) $(SRC_DIR)/linker.ld
-	@echo "[ LD ] $(notdir $(O_FILES)) -> $(BUILD_DIR)/$(TARGET)"
-	@$(CXX) $(LINK_FLAGS) $(O_FILES) -T $(SRC_DIR)/linker.ld -o $(BUILD_DIR)/$(TARGET)
-
-# Directories needed
-# TODO : figure out how to remove duplicates from this list
-dirs:
-	@mkdir -p $(O_DIRS) boot
-
-# Dependencies
--include $(DEP_FILES)
-
-# Compiling the assembly
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.$(ASM_EXT)
-	@echo "[ AS ] $(notdir $<) -> $(notdir $@)"
-	@$(AS) $(AS_FLAGS) $< -o $@
-
-# Compiling the C++ sources
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.$(CXX_EXT)
-	@echo "[ CXX ] $(notdir $<) -> $(notdir $@)"
-	@$(CXX) $(COMPILE_FLAGS) $< -o $@
+.PHONY: check-arch
+check-arch:
+	@if [ "$(ARCH)" == "" ]; then \
+		echo "Unknown architecture '$(ARCH)'. Available targets: i686-elf arm-none-eabi" ; \
+		exit 1 ; \
+	fi
 
 .PHONY: clean
 clean:
-	rm -f $(TARGET) $(IMAGE)
+	rm -f $(TARGET) $(ELF) 
 	rm -rf $(BUILD_DIR)

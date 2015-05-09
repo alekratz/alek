@@ -17,9 +17,9 @@
  * along with Alek's Awesome Arm Kernel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gpu.h"
-#include "types.h"
-#include "mailbox.h"
+#include <gpu.h>
+#include <mailbox.h>
+#include <types.h>
 
 // Actual definition of FramebufferInfo here. However, what it /points/ to
 // is perpetually on the stack. Specifically, kmain's stack.

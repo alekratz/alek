@@ -17,11 +17,11 @@
  * along with Alek's Awesome Arm Kernel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "uart.h"
-#include "mem.h"
-#include "cpu.h"
-#include "periph.h"
-#include "string.h"
+#include <uart.h>
+#include <periph.h>
+#include <cpu.h>
+#include <mem.h>
+#include <string.h>
 
 #define UART0_CLKREF 3000000
 

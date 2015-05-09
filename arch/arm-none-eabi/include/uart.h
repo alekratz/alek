@@ -20,8 +20,8 @@
 #ifndef AAA_UART_H
 #define AAA_UART_H
 
-#include "types.h"
-#include "periph.h"
+#include <types.h>
+#include <periph.h>
 
 enum UART0
 {
