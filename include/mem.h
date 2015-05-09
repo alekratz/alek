@@ -20,6 +20,11 @@
 #ifndef ALEK_MEM_H
 #define ALEK_MEM_H
 
+/* Arch-specific memory functions */
+#if defined(__arm__)
+#include "arch/mem.h"
+#endif
+
 #include "types.h"
 
 volatile void put32(addr_t addr, u32 val);
@@ -30,9 +35,5 @@ volatile u32  get32(addr_t addr);
  */
 #define P32_I(addr, val) put32(reinterpret_cast<addr_t>(addr), val)
 #define G32_I(addr) get32(reinterpret_cast<addr_t>(addr))
-
-#if defined(__arm__)
-void mem_barrier();
-#endif
 
 #endif /* ALEK_MEM_H */
