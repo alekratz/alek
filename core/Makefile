@@ -3,6 +3,8 @@ ASM_FILES=$(notdir $(shell find . -type f -name \*.s))
 OBJS=$(CXX_FILES:%.cpp=$(BUILD_DIR)/%.o) \
 	$(ASM_FILES:%.s=$(BUILD_DIR)/%.o)
 
+print-%: ; @echo $*=$($*)
+
 ifeq ($(BUILD_DIR),)
 	$(error BUILD_DIR not defined)
 endif
