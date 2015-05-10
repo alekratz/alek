@@ -28,7 +28,3 @@ volatile u32  get32(addr_t addr)
 {
   return *(volatile u32*)addr;
 }
-
-#if defined(__arm__)
-
-#endif
