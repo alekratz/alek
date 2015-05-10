@@ -2,7 +2,7 @@
 (formerly AAA! Kernel)
 Independent study Fall 2015
 
-For more comprehensive building instructions, check out [the wiki1](https://github.com/alekratz/aaa/wiki)!
+For more comprehensive building instructions, check out [the wiki](https://github.com/alekratz/aaa/wiki)!
 
 #Building for x86
 You must have an i686-elf compiler at your disposal.
