@@ -28,6 +28,8 @@ ifeq ($(BUILD_DIR),)
 	$(error BUILD_DIR not defined)
 endif
 
+-include $(DEP_FILES)
+
 all: $(OBJS)
 
 $(BUILD_DIR)/%.o: $(ARCH)/%.cpp | $(BUILD_DIR)
