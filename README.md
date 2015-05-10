@@ -2,17 +2,29 @@
 (formerly AAA! Kernel)
 Independent study Fall 2015
 
-#Building
-You must have an arm-none-eabi compiler at your disposal - this is bare metal, after all. I'm not going to go over the details for *how* to go about building a cross-compiler toolchain, but there is a link at the bottom of this file for a good source on how to do that.
+For more comprehensive building instructions, check out [the wiki1](https://github.com/alekratz/aaa/wiki)!
 
-After you have your toolchain chosen, the following steps will build the kernel:
+#Building for x86
+You must have an i686-elf compiler at your disposal.
+
+After you have your toolchain built, the following steps will build the kernel:
 ```
-make
+make TARGET=x86
+```
+
+That wasn't so hard! :)
+
+#Building for Raspberry Pi
+You must have an arm-none-eabi compiler at your disposal - this is bare metal, after all.
+
+After you have your toolchain built, the following steps will build the kernel and generate an image ready for the SD card:
+```
+make TARGET=rpi
 ./fetchfirmware.sh
 ./genimage.sh
 ```
 
-`make` will (of course) make an ARM image of the kernel which then can be loaded by the raspberry pi.
+`make TARGET=rpi` will (of course) make an ARM image of the kernel which then can be loaded by the raspberry pi.
 
 `./fetchfirmware.sh` will fetch all of the necessary firmware for loading up the GPU in the RPI. This is also vital, because this kernel doesn't contain code for initializing the CPU, which the firmware does do.
 
