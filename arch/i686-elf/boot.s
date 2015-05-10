@@ -25,7 +25,7 @@
 .set CHECKSUM, -(MAGIC + FLAGS)   # checksum of above
 
 # Multiboot header
-.section multiboot
+.section .multiboot
 .align 4
 .long MAGIC
 .long FLAGS
@@ -46,6 +46,7 @@ start:
   movl $stack_top, %esp
   # Jump into the kernel
   call kmain
+  # Hang
   cli
   hlt
 .Lhang:

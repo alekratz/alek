@@ -22,40 +22,29 @@ ENTRY(start)
 SECTIONS
 {
   /* Typical place for bootloaders to load a kernel up. */
-  . = 1M;
-  _start = .;
-  _text_start = .;
-  .text : {
-    *(.multiboot) /* Put the multiboot header, as it's required */
+  . = 0x100000;
+
+  .text BLOCK(4K) : ALIGN(4K) 
+  {
+    *(.multiboot)
     *(.text)
   }
 
-  . = ALIGN(4096); /* align to page size */
-  _text_end = .;
-  _rodata_start = .;
-  .rodata : {
+  .rodata BLOCK(4K) : ALIGN(4K) 
+  {
     *(.rodata)
   }
 
-  . = ALIGN(4096); /* align to page size */
-  _rodata_end = .;
-  _data_start = .;
-  .data : {
+  .data BLOCK(4K) : ALIGN(4K) 
+  {
     *(.data)
   }
   
-  . = ALIGN(4096); /* align to page size */
-  _data_end = .;
-  _bss_start = .;
-  .bss : {
-    bss = .;
+  .bss BLOCK(4K) : ALIGN(4K) 
+  {
     *(COMMON)
     *(.bss)
     *(.bootstrap_stack)
   }
   
-  . = ALIGN(4096); /* align to page size */
-  _bss_end = .;
-  
-  _end = .;
 }
