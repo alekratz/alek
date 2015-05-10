@@ -17,38 +17,43 @@
 # along with Alek's Little Endian Kernel.  If not, see <http://www.gnu.org/licenses/>.
 # 
 
-TARGET=kernel.img
+ifeq ($(TARGET),x86)
+	export ARCH=i686-elf
+	CXX_FLAGS+=-nostdlib
+	LD_FLAGS+=-nostdlib
+else ifeq ($(TARGET),rpi)
+	export ARCH=arm-none-eabi
+	CXX_FLAGS+=-mfpu=vfp -mfloat-abi=hard -march=armv6zk -mtune=arm1176jzf-s
+endif
+
+IMAGE=kernel.img
 ELF=kernel.elf
 CORE_SRC_FILES:=$(shell find core -type f -name \*.s) \
 	$(shell find core -type f -name \*.cpp)
 CORE_O_FILES=$(addprefix $(BUILD_DIR)/core/,\
 	$(patsubst %.cpp,%.o,$(patsubst %.s,%.o,$(notdir $(CORE_SRC_FILES)))))
+CORE_DEP_FILES=$(CORE_O_FILES:%.o=%.d)
 ARCH_SRC_FILES:=$(shell find arch/$(ARCH) -type f -name \*.s) \
 	$(shell find arch/$(ARCH) -type f -name \*.cpp)
 ARCH_O_FILES=$(addprefix $(BUILD_DIR)/arch/,\
 	$(patsubst %.cpp,%.o,$(patsubst %.s,%.o,$(notdir $(ARCH_SRC_FILES)))))
+ARCH_DEP_FILES=$(ARCH_O_FILES:%.o=%.d)
 O_FILES=$(CORE_O_FILES) $(ARCH_O_FILES)
 BUILD_DIR=build
-export CXX_FLAGS=-I$(PWD)/include -I$(PWD)/arch/$(ARCH)/include -std=c++14 \
+export CXX_FLAGS+=-I$(PWD)/include -I$(PWD)/arch/$(ARCH)/include -std=c++14 \
 	-ffreestanding -fno-builtin -fno-rtti -fno-exceptions -nostartfiles -O2 -c \
-	-Wall
-export LD_FLAGS=-nostartfiles -O2
+	-Wall -MP -MMD
+export LD_FLAGS+=-nostartfiles -O2 -lc
 export CXX=$(ARCH)-g++
 export AS=$(ARCH)-as
 export OBJCOPY=$(ARCH)-objcopy
 
-ifeq ($(ARCH),i686-elf)
-	CXX_FLAGS+=
-else ifeq ($(ARCH),arm-none-eabi)
-	CXX_FLAGS+=-mfpu=vfp -mfloat-abi=hard -march=armv6zk -mtune=arm1176jzf-s
-endif
-
 print-%: ; @echo $*=$($*)
 
-all: $(TARGET)
+all: $(IMAGE)
 
-$(TARGET): check-arch $(ELF)
-	$(OBJCOPY) $(ELF) -O binary $(TARGET)
+$(IMAGE): check-arch $(ELF)
+	$(OBJCOPY) $(ELF) -O binary $(IMAGE)
 
 $(ELF): arch core arch/$(ARCH)/link.ld
 	@echo linking $(ELF)
@@ -57,12 +62,12 @@ $(ELF): arch core arch/$(ARCH)/link.ld
 .PHONY: core
 core: $(CORE_SRC_FILES)
 	@echo building core
-	@$(MAKE) -C core BUILD_DIR=../$(BUILD_DIR)/core
+	@$(MAKE) -C core BUILD_DIR=../$(BUILD_DIR)/core DEP_FILES="$(CORE_DEP_FILES)"
 
 .PHONY: arch
 arch: $(ARCH_SRC_FILES)
 	@echo building $(ARCH)
-	@$(MAKE) -C arch BUILD_DIR=../$(BUILD_DIR)/arch
+	@$(MAKE) -C arch BUILD_DIR=../$(BUILD_DIR)/arch DEP_FILES="$(ARCH_DEP_FILES)"
 
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
@@ -70,11 +75,11 @@ $(BUILD_DIR):
 .PHONY: check-arch
 check-arch:
 	@if [ "$(ARCH)" == "" ]; then \
-		echo "Unknown architecture '$(ARCH)'. Available targets: i686-elf arm-none-eabi" ; \
+		echo "Unknown target '$(TARGET)'. Available targets: x86 rpi" ; \
 		exit 1 ; \
 	fi
 
 .PHONY: clean
 clean:
-	rm -f $(TARGET) $(ELF) 
+	rm -f $(IMAGE) $(ELF) 
 	rm -rf $(BUILD_DIR)
