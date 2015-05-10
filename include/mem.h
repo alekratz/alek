@@ -30,6 +30,14 @@
 volatile void put32(addr_t addr, u32 val);
 volatile u32  get32(addr_t addr);
 
+template<typename T>
+inline T *memset(T *s, s32 c, u32 n)
+{
+  for(u32 i = 0; i < n ; i++)
+    s[i] = c;
+  return s;
+}
+
 /**
  * puts a 32 bit integer
  */
