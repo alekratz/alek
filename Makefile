@@ -45,7 +45,7 @@ BUILD_DIR=build
 
 export CXX_FLAGS+=-I$(PWD)/include -I$(PWD)/arch/$(ARCH)/include -std=c++14 \
 	-ffreestanding -fno-builtin -fno-rtti -fno-exceptions -nostartfiles -O2 -c \
-	-Wall -MP -MMD
+	-Wall -MP -MMD -lgcc
 export LD_FLAGS+=-nostartfiles -O2 -lc
 export CXX=$(ARCH)-g++
 export AS=$(ARCH)-as
@@ -56,10 +56,11 @@ print-%: ; @echo $*=$($*)
 all: $(IMAGE)
 
 $(IMAGE): check-arch $(ELF)
+	@echo == copying image
 	$(OBJCOPY) $(ELF) -O binary $(IMAGE)
 
 $(ELF): arch core arch/$(ARCH)/link.ld
-	@echo linking $(ELF)
+	@echo == linking $(ELF)
 	$(CXX) $(LD_FLAGS) $(O_FILES) -T arch/$(ARCH)/link.ld -o $(ELF)
 
 .PHONY: core
