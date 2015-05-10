@@ -1,5 +1,6 @@
 *.o
 *.elf
 *.img
-build/
-boot/
+*.iso
+./build/
+./boot/
