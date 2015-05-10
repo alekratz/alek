@@ -17,7 +17,10 @@
  * along with Alek's Little Endian Kernel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "terminal.h"
+ 
 extern "C" void kmain()
 {
+  Terminal::get_instance().puts("Hello, Kernel!");
   while(1);
 }

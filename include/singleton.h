@@ -25,10 +25,10 @@ class Singleton
 {
 protected:
   Singleton() = default;
-  virtual ~Singleton() = default;
+  ~Singleton() { };
 
 public:
-  T& get_instance()
+  static T& get_instance()
   {
     static T instance;
     return instance;

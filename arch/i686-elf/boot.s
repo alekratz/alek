@@ -46,6 +46,10 @@ start:
   movl $stack_top, %esp
   # Jump into the kernel
   call kmain
+  # After the kernel exits, be sure to call __cxa_finalize
+  push 0
+  call __cxa_finalize
+
   # Hang
   cli
   hlt

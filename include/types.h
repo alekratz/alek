@@ -49,6 +49,9 @@ typedef s32 result_t;
 // size_t
 typedef u32 size_t;
 
+// coordinate type
+typedef u32 coord_t;
+
 typedef void* addr_t;
 
 #endif /* ALEK_TYPES_H */
