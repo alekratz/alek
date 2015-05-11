@@ -39,12 +39,22 @@ void Terminal::putentry(char c, u8 color, coord_t x, coord_t y)
 
 void Terminal::putc(char c)
 {
-  putentry(c, m_term_color, m_term_col, m_term_row);
-  if((++m_term_col) == VGA_WIDTH)
+  if(c >= ' ')
+    putentry(c, m_term_color, m_term_col, m_term_row);
+  if((++m_term_col) == VGA_WIDTH || c == '\n')
   {
     m_term_col = 0;
     if((++m_term_row) == VGA_HEIGHT)
       m_term_row = 0;
+  }
+  
+  // special char stuff
+  if(c == '\t')
+  {
+    
+    do 
+      putc(' ');
+    while(m_term_col % 4);
   }
 }
 

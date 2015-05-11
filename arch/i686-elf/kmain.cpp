@@ -18,9 +18,14 @@
  */
 
 #include "terminal.h"
- 
+
 extern "C" void kmain()
 {
-  Terminal::get_instance().puts("Hello, Kernel!");
+  Terminal::get_instance().puts("Hello, Kernel!\n" 
+    "Newline test\n" 
+    "1. \tTabulation\n"
+    "2. \tSecond tabulation\n"
+    "\tNo tab"
+    );
   while(1);
 }

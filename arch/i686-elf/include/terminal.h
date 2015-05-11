@@ -20,7 +20,7 @@
 #ifndef ALEK_TERMINAL_H
 #define ALEK_TERMINAL_H
 
-#include "singleton.h"
+#include "pattern/singleton.h"
 #include "types.h"
 
 #define VGA_WIDTH 80
