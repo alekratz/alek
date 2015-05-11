@@ -26,7 +26,7 @@ Terminal::Terminal()
   , m_term_col(0)
   , m_term_buffer(reinterpret_cast<u16*>(0xB8000))
 {
-  m_term_color = make_color(VgaColor::LIGHT_GREY, VgaColor::BLACK);
+  m_term_color = make_color(VgaColor::BLACK, VgaColor::WHITE);
   u16 entry = make_vga_entry(' ', m_term_color);
   memset<u16>(m_term_buffer, entry, VGA_WIDTH * VGA_HEIGHT);
 }
@@ -39,22 +39,25 @@ void Terminal::putentry(char c, u8 color, coord_t x, coord_t y)
 
 void Terminal::putc(char c)
 {
-  if(c >= ' ')
-    putentry(c, m_term_color, m_term_col, m_term_row);
-  if((++m_term_col) == VGA_WIDTH || c == '\n')
+  switch(c)
   {
-    m_term_col = 0;
-    if((++m_term_row) == VGA_HEIGHT)
-      m_term_row = 0;
-  }
-  
-  // special char stuff
-  if(c == '\t')
-  {
-    
-    do 
-      putc(' ');
-    while(m_term_col % 4);
+    case '\n':
+      goto new_line;
+    case '\t':
+      do
+        putentry(' ', m_term_color, m_term_col++, m_term_row);
+      while(m_term_col % 4);
+      break;
+    default:
+      putentry(c, m_term_color, m_term_col++, m_term_row);
+      if(m_term_col == VGA_WIDTH)
+      {
+new_line:
+        m_term_col = 0;
+        if((++m_term_row) == VGA_HEIGHT)
+          m_term_row = 0;
+      }
+      break;
   }
 }
 
