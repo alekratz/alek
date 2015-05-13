@@ -41,7 +41,14 @@ When reading through other peoples' code for bare-metal Raspberry Pi programs/ke
 ##Why a kernel?
 AAA! Kernel is mostly a way to learn what kernel-level code does. I took an operating systems class in Spring of 2015, and I learned a lot! However, I wanted to learn more; I wanted to know what the kernel was actually *doing* at that low of a level. So here we are.
 
-##Why enable stdlib? (Or rather, why not disable it?)
+##Why are you supporting Raspberry Pi and x86?
+...And isn't that obnoxious and complicated?
+
+**Short answer**: Because I can, and no, it's actually streamlined and easy.
+
+**Long answer**: There are some necessary parts to write a kernel for the Raspberry Pi, including having a physical Raspberry Pi. There are also some parts of the programming process that an oscilloscope is necessary for. I don't always have an oscilloscope or a Raspberry Pi, and it's very difficult to virtualize the RPi in something like Qemu or Bochs. However, I almost always have access to a x86 machine, and the x86 architecture has many emulators available for it. A lot of the core kernel code is going to be similar (if not identical), so I split up architecture-specific things to be in the `arch/` directory, and identical code to be in the `core/` directory.
+
+##Raspberry Pi: Why enable stdlib? (Or rather, why not disable it?)
 One reason, consensed into a few symbols and letters: `__aeabi_uidiv`. `__aeabi_uidiv` is the method that the linker attempts to use to implement division because it's not already on the chip; if I don't use the stdlib, I don't get integer division. Basically saying, the ARM processor does not natively support integer division. While I could attempt to implement it myself, many other smarter folks over at GNU have done that for me. I'm probably not going to be using the standard libraries quite yet, however, I may start using it if I see it provides things that I deem to be useful (e.g., `std::underlying_type`).
 
 #License
