@@ -21,6 +21,8 @@
 #include "string.h"
 #include "terminal.h"
 
+#define TERM_TAB_WIDTH 8
+
 Terminal::Terminal()
   : m_term_row(0)
   , m_term_col(0)
@@ -46,7 +48,7 @@ void Terminal::putc(char c)
     case '\t':
       do
         putentry(' ', m_term_color, m_term_col++, m_term_row);
-      while(m_term_col % 4);
+      while(m_term_col % TERM_TAB_WIDTH);
       break;
     default:
       putentry(c, m_term_color, m_term_col++, m_term_row);
@@ -63,9 +65,8 @@ new_line:
 
 void Terminal::puts(const char *str)
 {
-  size_t len = strlen(str);
-  for(size_t i = 0; i < len; i++)
-    putc(str[i]);
+  while(*str)
+    putc(*str++);
 }
 
 u8 make_color(VgaColor fg, VgaColor bg)
