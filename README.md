@@ -1,5 +1,5 @@
 #ALEK - Alek's Little Endian Kernel
-(formerly ALEK)
+(formerly AAA! Kernel)
 Independent study Fall 2015
 
 For more comprehensive building instructions, check out [the wiki](https://github.com/alekratz/aaa/wiki)!
