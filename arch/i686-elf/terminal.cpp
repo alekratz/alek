@@ -21,7 +21,7 @@
 #include "string.h"
 #include "terminal.h"
 
-#define TERM_TAB_WIDTH 8
+#define TERM_TAB_WIDTH 4
 
 Terminal::Terminal()
   : m_term_row(0)
