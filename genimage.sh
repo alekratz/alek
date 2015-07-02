@@ -51,7 +51,7 @@ BOOTDIR=boot
 IMG="rpi-image.img"
 vecho "Creating $IMG"
 dd bs=1M count=64 if=/dev/zero of=$IMG 2> /dev/null
-fdisk $IMG -L=never << EOF
+fdisk $IMG << EOF
 n
 p
 1
@@ -74,8 +74,12 @@ mkdir $MOUNTDIR
 
 # for some reason we have to forward EOF to sudo. why
 echo -e "\0" | HOME=$PWD sudo -E -A -H bash<< EOF
-	device=\$(losetup --show -P -f $IMG) || exit 1
-	devicepart=\${device}p1
+	device=\$(losetup --show -f $IMG) || exit 1
+	if [[ -e \${device}p1 ]]; then
+		devicepart=\${device}p1
+	else
+		devicepart=\$device
+	fi
 	mkfs.vfat \$devicepart
 	if [[ -n "$verbose" ]]; then echo "Mounting \$devicepart under $MOUNTDIR"; fi
 	mount \$devicepart $MOUNTDIR
