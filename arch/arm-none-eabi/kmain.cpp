@@ -19,11 +19,33 @@
  
 #include "gpu.h"
 #include "uart.h"
+#include <mem.h>
 
 static FramebufferInfo d_fb_info; // forever version of framebufferinfo
 
+#define GPFSEL1 ((addr_t)0x20200004)
+#define GPSET0  ((addr_t)0x2020001C)
+#define GPCLR0  ((addr_t)0x20200028)
+
+void dummy() { return; }
+
 extern "C" void kmain()
 {
+  u32 ra = get32(GPFSEL1);
+  ra &= ~(7 << 18);
+  ra |= 1 << 18;
+  put32(GPFSEL1, ra);
+
+  while(1)
+  {
+    put32(GPSET0, 1 << 16);
+    for(ra = 0; ra < 0x100000; ra++)
+      dummy();
+    put32(GPCLR0, 1 << 16);
+    for(ra = 0; ra < 0x100000; ra++)
+      dummy();
+  } 
+  /*
   // initialize uart, and specifically, serial communication
   uart_init(115200);
   // initialize the framebuffer
@@ -37,4 +59,5 @@ extern "C" void kmain()
   {
     uart_putc(uart_getc());
   }
+  */
 }
