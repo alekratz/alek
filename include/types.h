@@ -20,8 +20,11 @@
 #ifndef ALEK_TYPES_H
 #define ALEK_TYPES_H
 
-typedef unsigned char       u8;
-typedef signed char         s8;
+typedef float               f32;
+typedef double              f64;
+
+typedef unsigned char       u8 ;
+typedef signed char         s8 ;
 
 typedef unsigned short      u16;
 typedef signed short        s16;
