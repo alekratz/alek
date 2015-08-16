@@ -13,12 +13,4 @@ num_t log2(num_t num)
   return 0;
 }
 
-/*
-template<>
-double log2(double num)
-{
-  return 0;
-}
-*/
-
 #endif
