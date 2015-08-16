@@ -43,10 +43,13 @@ ARCH_DEP_FILES:=$(ARCH_O_FILES:%.o=%.d)
 O_FILES=$(CORE_O_FILES) $(ARCH_O_FILES)
 BUILD_DIR=build
 
+# Optimization level
+O_LEVEL=2
+
 export TOP:=$(PWD)
 export CXX_FLAGS+=-I$(TOP)/libc/libc/include -I$(TOP)/libc/libm/include \
 	-std=c++14 \
-	-ffreestanding -fno-builtin -fno-rtti -fno-exceptions -nostartfiles -O2 -c \
+	-ffreestanding -fno-builtin -fno-rtti -fno-exceptions -nostartfiles -O$(O_LEVEL) -c \
 	-Wall -MP -MMD
 export LD_FLAGS+=-nostartfiles -O2 -L$(BUILD_DIR)/libc -lc -lm
 export CXX=$(ARCH)-g++
