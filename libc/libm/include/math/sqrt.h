@@ -6,8 +6,7 @@
 /**
  * Architecture implemented square root
  */
-extern f64 __arch_sqrt64(f64 num);
-extern f32 __arch_sqrt32(f32 num);
+extern "C" f64 __arch_sqrt64(f64 num);
 
 /**
  * "Lazy" version of square root

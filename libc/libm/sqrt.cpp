@@ -1,6 +1,20 @@
 #include "math/sqrt.h"
 
-f64 __arch_sqrt64(f64 num)
+f64 __sqrt64(f64 num)
+{
+  return __arch_sqrt64(num);
+}
+
+/**
+ * Actual implementation of the square root function by the architecture
+ */
+static f64 __arch_sqrt64(f64 num);
+/**
+ * Hacky implementation of the sqrt() for ARM
+ */
+static f32 __arch_sqrt32(f32 num);
+
+static f64 __arch_sqrt64(f64 num)
 {
   f64 out = 0.0;
 #ifdef __x86_64__
