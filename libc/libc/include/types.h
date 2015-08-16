@@ -35,6 +35,9 @@ typedef signed int          s32;
 typedef unsigned long long  u64;
 typedef signed long long    s64;
 
+static_assert(sizeof(f32) == 4, "F32 is not 32 bits");
+static_assert(sizeof(f64) == 8, "F64 is not 64 bits");
+
 static_assert(sizeof(u8) == 1, "U8 is not 8 bits");
 static_assert(sizeof(s8) == 1, "S8 is not 8 bits");
 static_assert(sizeof(u16) == 2, "U16 is not 16 bits");
