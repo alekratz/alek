@@ -17,13 +17,13 @@
 # along with Alek's Little Endian Kernel.  If not, see <http://www.gnu.org/licenses/>.
 # 
 
-CXX_FILES=$(shell find $(ARCH) -type f -name \*.cpp)
-ASM_FILES=$(shell find $(ARCH) -type f -name \*.s)
-OBJS=$(CXX_FILES:$(ARCH)/%.cpp=$(BUILD_DIR)/%.o) \
-	$(ASM_FILES:$(ARCH)/%.s=$(BUILD_DIR)/%.o)
+CXX_FILES=$(shell find . -type f -name \*.cpp)
+ASM_FILES=$(shell find . -type f -name \*.s)
+OBJS=$(CXX_FILES:%.cpp=$(BUILD_DIR)/%.o) \
+	$(ASM_FILES:%.s=$(BUILD_DIR)/%.o)
 OBJ_DIRS=$(sort $(dir $(OBJS)))
 
-print-%: ; @echo "$*=$($*)"
+print-%: ; @echo $*=$($*)
 
 ifeq ($(BUILD_DIR),)
 	$(error BUILD_DIR not defined)
@@ -33,13 +33,13 @@ endif
 
 all: $(OBJS)
 
-$(BUILD_DIR)/%.o: $(ARCH)/%.cpp | $(OBJ_DIRS)
-	@echo [ CXX ] $<
-	@$(CXX) $(CXX_FLAGS) $< -o $@
-
-$(BUILD_DIR)/%.o: $(ARCH)/%.s | $(OBJ_DIRS)
+$(BUILD_DIR)/%.o: %.s | $(OBJ_DIRS)
 	@echo [ AS ] $<
-	@$(AS) $(AS_FLAGS) $< -o $@
+	@$(AS) $(AS_FLAGS) $< -fpic -o $@
+
+$(BUILD_DIR)/%.o: %.cpp | $(OBJ_DIRS)
+	@echo [ CXX ] $<
+	@$(CXX) $(CXX_FLAGS) $< -fpic -o $@
 
 $(OBJ_DIRS):
 	mkdir -p $(OBJ_DIRS)

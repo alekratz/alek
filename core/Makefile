@@ -17,9 +17,11 @@
 # along with Alek's Little Endian Kernel.  If not, see <http://www.gnu.org/licenses/>.
 # 
 
+C_FILES=$(shell find . -type f -name \*.c)
 CXX_FILES=$(shell find . -type f -name \*.cpp)
 ASM_FILES=$(shell find . -type f -name \*.s)
-OBJS=$(CXX_FILES:%.cpp=$(BUILD_DIR)/%.o) \
+OBJS=$(C_FILES:%.c=$(BUILD_DIR)/%.o) \
+	$(CXX_FILES:%.cpp=$(BUILD_DIR)/%.o) \
 	$(ASM_FILES:%.s=$(BUILD_DIR)/%.o)
 OBJ_DIRS=$(sort $(dir $(OBJS)))
 
@@ -34,10 +36,12 @@ endif
 all: $(OBJS)
 
 $(BUILD_DIR)/%.o: %.s | $(OBJ_DIRS)
-	$(AS) $(AS_FLAGS) $< -o $@
+	@echo [ AS ] $<
+	@$(AS) $(AS_FLAGS) $< -o $@
 
 $(BUILD_DIR)/%.o: %.cpp | $(OBJ_DIRS)
-	$(CXX) $(CXX_FLAGS) $< -o $@
+	@echo [ CXX ] $<
+	@$(CXX) $(CXX_FLAGS) $< -o $@
 
 $(OBJ_DIRS):
 	mkdir -p $(OBJ_DIRS)
