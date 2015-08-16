@@ -1,9 +1,27 @@
-/**
- * This file was rightfully and shamelessly stolen from Red Hat's libc.
- * All credit for this file goes to Red Hat for being so smart.
+/**************************************************************************************
+ * Copyright (C) 2015 Alek Ratzloff
+ *
+ * This file is part of Alek's Little Endian Kernel.
+ * 
+ * Alek's Little Endian Kernel is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * Alek's Little Endian Kernel is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with Alek's Little Endian Kernel.  If not, see <http://www.gnu.org/licenses/>.
+ **************************************************************************************
+ * All or parts of this file were taken from Red Hat's newlib. Credits for these parts
+ * go to Red Hat.
  *
  * File: newlib-2.2.0/newlib/libc/include/machine/ieeefp.h
  */
+
 
 #ifndef __IEEE_BIG_ENDIAN
 #ifndef __IEEE_LITTLE_ENDIAN
