@@ -26,9 +26,9 @@
  * Red Hat's newlib libm implementation of ln(x) for doubles.
  * This is useful for copying/stealing
  */
-extern f64 __ieee754_log(f64 x);
+extern "C" f64 __ieee754_log64(f64 x);
 
-#define LN(x) (__ieee754_log(x))
+#define LN(x) (__ieee754_log64(x))
 
 template <typename num_t>
 num_t logbase(num_t num, num_t base)
