@@ -29,7 +29,7 @@ f64 __floor64(f64 in)
    asm("fld %[input]    ;"
        "fistp %[output] ;"
        : [output] "=m" (out)
-       : [input]  "r"  (in)
+       : [input]  "m"  (in)
     );
    return static_cast<f64>(out);
 #endif

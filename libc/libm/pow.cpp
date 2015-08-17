@@ -72,11 +72,11 @@ f64 __pow64(f64 a, f64 b)
   {
     for(int i = 1; i < b; i++)
       p *= a;
-    return p;
   }
   /* f64 case */
   else
   {
     // TODO
   }
+  return p;
 }
