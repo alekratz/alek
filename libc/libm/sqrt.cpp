@@ -1,28 +1,31 @@
 #include "math/sqrt.h"
 
-f64 __sqrt64(f64 num)
-{
-  return __arch_sqrt64(num);
-}
-
 /**
  * Actual implementation of the square root function by the architecture
+ * Hopefully works super fast!
  */
 static f64 __arch_sqrt64(f64 num);
 /**
  * Hacky implementation of the sqrt() for ARM
  */
+#ifdef __arm__
 static f32 __arch_sqrt32(f32 num);
+#endif
+
+f64 __sqrt64(f64 num)
+{
+  return __arch_sqrt64(num);
+}
 
 static f64 __arch_sqrt64(f64 num)
 {
-  f64 out = 0.0;
-#ifdef __x86_64__
+  f64 out = 0;
+#ifdef __i386
   asm("fldl %[input]   ;"
       "fsqrt           ;"
       "fstl %[output]  ;"
-      : [output] "=r" (out)
-      : [input] "r"   (num)
+      : [output] "=m" (out)
+      : [input] "m"   (num)
     );
 #else
 #ifdef __arm__
