@@ -23,6 +23,9 @@
 
 f64 __ceil64(f64 x)
 {
-  u32 l = static_cast<u64>(x);
-  return static_cast<f64>(l) + 1.0;
-}
+  s64 l = static_cast<s64>(x);
+  if(x < 0.0 || x == l)
+    return static_cast<f64>(l);
+  else
+    return static_cast<f64>(l) + 1.0;
+} 
