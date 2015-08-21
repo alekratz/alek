@@ -18,11 +18,11 @@
  */
 
 #include <types.h>
-#include "math/floor.h"
+#include "math/ceil.h"
 #include "math/internal/common.h"
 
-f64 __floor64(f64 x)
+f64 __ceil64(f64 x)
 {
   u32 l = static_cast<u64>(x);
-  return static_cast<f64>(l);
+  return static_cast<f64>(l) + 1.0;
 }
