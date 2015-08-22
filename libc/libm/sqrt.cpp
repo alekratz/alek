@@ -39,7 +39,7 @@ f64 __sqrt64(f64 num)
 static f64 __arch_sqrt64(f64 num)
 {
   f64 out = 0;
-#ifdef __i386
+#if defined(__i386) || defined(__x86_64__)
   asm("fldl %[input]   ;"
       "fsqrt           ;"
       "fstl %[output]  ;"

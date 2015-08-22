@@ -17,15 +17,15 @@
  * along with Alek's Little Endian Kernel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <types.h>
-#include "math/floor.h"
-#include "math/internal/common.h"
+#ifndef ALEK_LIBM_CEIL_H
+#define ALEK_LIBM_CEIL_H
 
-f64 __floor64(f64 x)
-{
-  s64 l = static_cast<s64>(x);
-  if(x >= 0.0 || x == l)
-    return static_cast<f64>(l);
-  else
-    return static_cast<f64>(l) - 1.0;
-}
+#include <types.h>
+
+extern "C" f64 __ceil64(f64 num);
+
+template<typename num_t>
+f64 ceil(num_t num)
+{ return __ceil64(static_cast<f64>(num)); }
+
+#endif
