@@ -20,7 +20,7 @@
 ifeq ($(TARGET),x86)
 	export ARCH=i686-elf
 	CXX_FLAGS+=-nostdinc -nostdinc++
-	LD_FLAGS+=-nostdlib -nodefaultlibs -nostdinc -nostdinc++
+	LD_FLAGS+=-nostdlib -nodefaultlibs
 else ifeq ($(TARGET),rpi)
 	export ARCH=arm-none-eabi
 	CXX_FLAGS+=-mfpu=vfp -mfloat-abi=hard -march=armv6zk -mtune=arm1176jzf-s
@@ -96,6 +96,11 @@ check-arch:
 		echo "Unknown target '$(TARGET)'. Available targets: x86 rpi" ; \
 		exit 1 ; \
 	fi
+
+.PHONY: test
+test:
+	@echo == building tests
+	@$(MAKE) -C test BUILD_DIR=../$(BUILD_DIR)/test
 
 .PHONY: clean
 clean:
