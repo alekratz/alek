@@ -18,14 +18,14 @@
  */
 
 #include <types.h>
-#include "math/floor.h"
+#include "math/ceil.h"
 #include "math/internal/common.h"
 
-f64 __floor64(f64 x)
+f64 __ceil64(f64 x)
 {
   s64 l = static_cast<s64>(x);
-  if(x >= 0.0 || x == l)
+  if(x < 0.0 || x == l)
     return static_cast<f64>(l);
   else
-    return static_cast<f64>(l) - 1.0;
-}
+    return static_cast<f64>(l) + 1.0;
+} 
