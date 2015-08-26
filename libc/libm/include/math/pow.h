@@ -25,7 +25,7 @@
 extern "C" f64 __pow64(f64 num, f64 pow);
 
 template<typename num_t>
-num_t pow(num_t num, num_t p)
+f64 pow(num_t num, num_t p)
 { return __pow64(static_cast<f64>(num), static_cast<f64>(p)); }
 
 #endif
