@@ -29,10 +29,9 @@ ifeq ($(BUILD_DIR),)
 	$(error BUILD_DIR not defined)
 endif
 
--include $(DEP_FILES)
-
 all: $(OBJS)
 
+-include $(DEP_FILES)
 $(BUILD_DIR)/%.o: $(ARCH)/%.cpp | $(OBJ_DIRS)
 	@echo [ CXX ] $<
 	@$(CXX) $(CXX_FLAGS) $< -o $@

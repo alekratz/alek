@@ -19,14 +19,22 @@
 
 #include "terminal.h"
 
-extern "C" void kmain()
+extern "C" struct mem_fields
+{
+  u32 *header_addr;
+  u32 *load_addr;
+  u32 *load_end_addr;
+  u32 *bss_end_addr;
+  u32 *entry_addr;
+};
+
+extern "C" void kmain(struct mem_fields mem)
 {
   Terminal& term_inst = Terminal::get_instance();
-  term_inst.puts("Hello, Kernel!\n" 
-    "Newline test\n" 
-    "1. \tTabulation\n"
-    "2. \tSecond tabulation\n"
-    "\tNo tab"
-    );
+  term_inst.printf("header_addr:   0x%p\n", mem.header_addr);
+  term_inst.printf("load_addr:     0x%p\n", mem.load_addr);
+  term_inst.printf("load_end_addr: 0x%p\n", mem.load_end_addr);
+  term_inst.printf("bss_end_addr:  0x%p\n", mem.bss_end_addr);
+  term_inst.printf("entry_addr:    0x%p\n", mem.entry_addr);
   while(1);
 }

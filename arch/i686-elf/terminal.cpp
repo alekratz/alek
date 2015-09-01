@@ -69,6 +69,14 @@ void Terminal::puts(const char *str)
     putc(*str++);
 }
 
+void Terminal::printf(const char *str)
+{
+  puts(str);
+}
+
+//template<typename Head, typename ... Tail>
+//void printf(const char *str, Head& head, Tail& ... tail);
+
 u8 make_color(VgaColor fg, VgaColor bg)
 {
   return fg | (bg << 4);
