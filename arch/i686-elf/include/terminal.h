@@ -21,8 +21,9 @@
 #define ALEK_TERMINAL_H
 
 #include "pattern/singleton.h"
-#include "types.h"
 
+#include <types.h>
+#include <ctype.h>
 #include <string.h>
 #include <math.h>
 
@@ -96,10 +97,23 @@ public:
   The number of characters written so far is stored in the pointed location.  
   % A % followed by another % character will write a single % to the stream.  %
    */
+  /*
   template<typename Head, typename ... Tail>
   void printf(const char *str, Head head, Tail ... tail)
   {
 
+  }
+  */
+
+  template<typename Head>
+  void printf(const char *str, Head *head)
+  {
+    // convert a pointer to a u32 or u64, where appropriate
+  #if defined(__i386)
+    printf(str, (u32)head);
+  #elif defined(__x86_64__)
+    printf(str, (u64)head);
+  #endif
   }
 
   template<typename Head>
@@ -115,6 +129,8 @@ public:
         bool force_polarity_sign = false;
         bool hash_flag = false;
         char pad_char = ' ';
+        u32 width = 0;
+        u32 precision = 0;
 
         bool flags_done = false;
         while(!flags_done)
@@ -124,71 +140,85 @@ public:
           {
             case '-':
               left_justify = true;
+              str++;
               break;
             case '+':
               force_polarity_sign = true;
+              str++;
               break;
             // maybe ignore the "space case", it makes parsing hard :(
             //case ' ':
             case '#':
               hash_flag = true;
+              str++;
               break;
             case '0':
               pad_char = '0';
+              str++;
               break;
             default:
               flags_done = true;
               break;
           }
-          str++;
         }
 
+        bool width_done = false;
+        while(!width_done)
+        {
+          // TODO : handle '*' case
+          if(isdigit(*str))
+          {
+            width *= 10;
+            width += (*str) - '0';
+            // only advance on digits
+            str++;
+          }
+          else
+          {
+            width_done = true;
+          }
+        }
 
-        // old impl
-        /*
-        str++;
+        bool precision_done = false;
+        // the . indicates that we're starting with a precision argument
+        if(*str == '.')
+        {
+          str++;
+          while(!precision_done)
+          {
+            if(isdigit(*str))
+            {
+              precision *= 10;
+              precision += (*str) - '0';
+              str++;
+            }
+            else
+            {
+              precision_done = true;
+            }
+          }
+        }
+
         switch(*str)
         {
-          case 'd': // decimal number
-            str++; // TODO : more integer options
-            print_int(head, "0123456789");
-            break;
-          case 'x': // hex
-            str++;
-            print_int(head, "0123456789abcdef", false);
-            break;
-          case 'X': // hex, upper case
-            str++;
-            print_int(head, "0123456789ABCDEF", false);
-            break;
-          case 'p': // pointer
-            str++;
-            // if we're printing a pointer, then convert it to the appropriate int
-#if defined(__i386)
-            print_num((u32)head, "0123456789abcdef");
-#elif defined(__x86_64__)
-            print_num((u64)head, "0123456789abcdef");
-#else
-#error ("Unknown architecture")
-#endif
-            break;
-          case 'P': // pointer, upper case
-            str++;
-#if defined(__i386)
-            print_num((u32)head, "0123456789ABCDEF");
-#elif defined(__x86_64__)
-            print_num((u64)head, "0123456789ABCDEF");
-#else
-#error ("Unknown architecture")
-#endif
-            break;
-          // nothing; just print out the %
-          default:
-            putc('%');
-            putc(*str++);
-            break;
+        case 'd': // decimal number
+          str++;
+          print_int(head, "0123456789");
+          break;
+        case 'p': // pointer
+        case 'x': // hex
+          str++;
+          print_int(head, "0123456789abcdef", false);
+          break;
+        case 'X': // hex, upper case
+          str++;
+          print_int(head, "0123456789ABCDEF", false);
+          break;
+        default:
+          putc('%');
+          putc(*str++);
+          break;
         }
-        */
       }
       else
       {
