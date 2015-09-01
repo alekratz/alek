@@ -18,23 +18,50 @@
  */
 
 #include "terminal.h"
-
-extern "C" struct mem_fields
+extern "C"
 {
-  u32 *header_addr;
-  u32 *load_addr;
-  u32 *load_end_addr;
-  u32 *bss_end_addr;
-  u32 *entry_addr;
-};
 
-extern "C" void kmain(struct mem_fields mem)
-{
-  Terminal& term_inst = Terminal::get_instance();
-  term_inst.printf("header_addr:   0x%p\n", mem.header_addr);
-  term_inst.printf("load_addr:     0x%p\n", mem.load_addr);
-  term_inst.printf("load_end_addr: 0x%p\n", mem.load_end_addr);
-  term_inst.printf("bss_end_addr:  0x%p\n", mem.bss_end_addr);
-  term_inst.printf("entry_addr:    0x%p\n", mem.entry_addr);
-  while(1);
+  struct MBInfo
+  {
+    u32 flags;
+    u32 mem_lower;
+    u32 mem_upper;
+    u32 boot_device;
+    const char* cmdline;
+    u32 mods_count;
+    u32 mods_addr;
+    u32 syms[8];
+    u32 mmap_addr;
+    u32 mmap_length;
+  };
+
+  void halt()
+  {
+    while(1);
+  }
+
+  void kmain(u32 eax, MBInfo* mb_info)
+  {
+    Terminal& term_inst = Terminal::get_instance();
+    if(eax != 0x2BADB002)
+    {
+      term_inst.printf("Invalid multiboot EAX value: %X\n", eax);
+      halt();
+    }
+    
+    term_inst.printf("flags: %x\n", mb_info->flags);
+    term_inst.printf("mem_lower: %x\n", mb_info->mem_lower);
+    term_inst.printf("mem_upper: %x\n", mb_info->mem_upper);
+    term_inst.printf("boot_device: %x\n", mb_info->boot_device);
+    term_inst.printf("cmdline: ");
+    term_inst.puts(mb_info->cmdline);
+    term_inst.putc('\n');
+    term_inst.printf("mods_count: %x\n", mb_info->mods_count);
+    term_inst.printf("mods_addr: %x\n", mb_info->mods_addr);
+    //term_inst.printf("syms: %x\n", syms[mb_info->8]);
+    term_inst.printf("mmap_addr: %x\n", mb_info->mmap_addr);
+    term_inst.printf("mmap_length: %x\n", mb_info->mmap_length);
+
+    while(1);
+  }
 }
