@@ -71,7 +71,7 @@ f32 __arch_sqrt32(f32 num)
 #ifdef __x86_64__
   asm("fldl %[input]   ;"
       "fsqrt           ;"
-      "fstl %[output]  ;"
+      "fstpl %[output]  ;"
       : [output] "=r" (out)
       : [input] "r"   (num)
     );

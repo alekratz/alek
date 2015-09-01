@@ -31,7 +31,7 @@ extern "C" f64 __ieee754_log64(f64 x);
 #define LN(x) (__ieee754_log64(x))
 
 template <typename num_t>
-num_t logbase(num_t num, num_t base)
+f64 logbase(num_t num, num_t base)
 { return LN(static_cast<f64>(num)) / LN(static_cast<f64>(base)); }
 
 #define log2(x) (logbase(x, 2))
