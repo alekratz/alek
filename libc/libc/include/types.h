@@ -20,20 +20,36 @@
 #ifndef ALEK_TYPES_H
 #define ALEK_TYPES_H
 
+// TODO : move these to stdint.h
+typedef unsigned char       uint8_t ;
+typedef signed char         int8_t  ;
+
+typedef unsigned short      uint16_t;
+typedef signed short        int16_t ;
+
+typedef unsigned int        uint32_t;
+typedef signed int          int32_t ;
+
+typedef unsigned long long  uint64_t;
+typedef signed long long    int64_t ;
+
+typedef int64_t             intmax_t;
+typedef uint64_t            uintmax_t;
+
 typedef float               f32;
 typedef double              f64;
 
-typedef unsigned char       u8 ;
-typedef signed char         s8 ;
+typedef uint8_t       u8;
+typedef int8_t        s8;
 
-typedef unsigned short      u16;
-typedef signed short        s16;
+typedef uint16_t      u16;
+typedef int16_t       s16;
 
-typedef unsigned int        u32;
-typedef signed int          s32;
+typedef uint32_t      u32;
+typedef int32_t       s32;
 
-typedef unsigned long long  u64;
-typedef signed long long    s64;
+typedef uint64_t      u64;
+typedef int64_t       s64;
 
 static_assert(sizeof(f32) == 4, "F32 is not 32 bits");
 static_assert(sizeof(f64) == 8, "F64 is not 64 bits");

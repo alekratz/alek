@@ -17,11 +17,10 @@
  * along with Alek's Little Endian Kernel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __ALEK_LIBC
-#define __ALEK_LIBC
+#include "types.h"
+#include "ctype.h"
 
-#include <types.h>
-
-size_t strlen(const char* c);
-
-#endif
+bool isdigit(s32 c)
+{
+	return (c >= '0' && c <= '9');
+}
