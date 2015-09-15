@@ -57,6 +57,7 @@ void Terminal::putc(char c)
 new_line:
         m_term_col = 0;
         if((++m_term_row) == VGA_HEIGHT)
+          // TODO : scroll up
           m_term_row = 0;
       }
       break;
