@@ -91,7 +91,7 @@ extern "C"
     Terminal& term_inst = Terminal::get_instance();
     if(eax != 0x2BADB002)
     {
-      term_inst.printf("Invalid multiboot EAX value: %X\n", eax);
+      //term_inst.printf("Invalid multiboot EAX value: %X\n", eax);
       halt();
     }
 
@@ -176,8 +176,6 @@ extern "C"
     }
     else
       term_inst.puts("-- vbe fields unavailable\n");
-
-
     while(1);
   }
 }
