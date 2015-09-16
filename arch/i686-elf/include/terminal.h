@@ -68,6 +68,18 @@ public:
   //template<>
   void printf(const char *s);
   
+  template<typename ... T>
+  void printf(const char *s, T ... );
+  
+  template<typename Head, typename ... Tail>
+  void printf(const char *s, Head h, Tail ... tail)
+  {
+    printf(s, h);
+    // uh... get the location of the format character
+    for(; *s && (*s) == c_fmt_char; s++);
+    printf(s, tail ...);
+  }
+  
   /*
    * Numbers:
    * 1. Print up to the first % sign
