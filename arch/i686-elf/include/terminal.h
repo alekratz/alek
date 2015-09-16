@@ -64,16 +64,41 @@ private:
   ~Terminal() = default;
 
   /* operations */
+public:
+  //template<>
+  void printf(const char *s);
+  
+  /*
+   * Numbers:
+   * 1. Print up to the first % sign
+   * 2. Print the number (or whatever)
+   */
+   
+  template<typename T>
+  void printf(const char *s, T* t)
+  {
+    for(; (*s) && (*s) != c_fmt_char; s++) putc(*s);
+    if(*s)
+    {
+      print_int(reinterpret_cast<u32>(t), "0123456789abcdef", false);
+      s++;
+    }
+    for(; (*s); s++) putc(*s);
+  }
+   
+  template<typename T>
+  void printf(const char *s, T t);
+  
+  void putentry(char c, u8 color, coord_t x, coord_t y);
+  void putc(char c);
+  void puts(const char *str);
+  
 protected:
   u32 m_get_term_row() { return m_term_row; }
   void m_set_term_row(u32 row) { m_term_row = row; }
 
   u32 m_get_term_col() { return m_term_col; }
   void m_set_term_col(u32 col) { m_term_col = col; }
-
-  void m_putentry(char c, u8 color, coord_t x, coord_t y);
-  void m_putc(char c);
-  void m_puts(const char *str);
 
   /**
    * Prints an integer (as opposed to a pointer). This will print the negative sign (if applicable)
@@ -109,15 +134,6 @@ protected:
     putc(alphabet[(u64)num]);
   }
 
-/* static operations */
-private:
-  static void putentry(char c, u8 color, coord_t x, coord_t y)
-    { this_t::get_instance().putentry(c, color, x, y); }
-  static void putc(char c) 
-    { this_t::get_instance().putc(c); }
-  static void puts(const char *str)
-    { this_t::get_instance().puts(str); }
-
 //  template<typename Head, typename ... Tail>
 //  void printf(const char *str, Head& head, Tail& ... tail);
 private:
@@ -125,6 +141,7 @@ private:
   u32 m_term_col;
   u8 m_term_color;
   u16 *m_term_buffer;
+  const char c_fmt_char = '%';
 
 private:
   friend class Singleton<Terminal>;
