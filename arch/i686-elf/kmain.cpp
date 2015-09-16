@@ -113,11 +113,7 @@ extern "C"
       term_inst.puts("-- boot_device field unavailable\n");
     }
     if(HAS_FLAG(mb_info->flags, MBOOT_CMDLINE))
-    {
-      term_inst.printf("cmdline: ");
-      term_inst.puts(mb_info->cmdline);
-      term_inst.putc('\n');
-    }
+      term_inst.printf("cmdline: %\n", mb_info->cmdline);
     else
     {
       term_inst.puts("-- cmdline field unavailable\n");
