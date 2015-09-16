@@ -53,180 +53,52 @@ enum VgaColor
 class Terminal
   : public Singleton<Terminal>
 {
+  /* typedefs */
+private:
+  typedef Terminal this_t;
+  typedef Singleton<this_t> base_t;
+
+  /* ctor, dtor */
 private:
   Terminal();
   ~Terminal() = default;
 
+  /* operations */
 public:
-
-  u32 get_term_row() { return m_term_row; }
-  void set_term_row(u32 row) { m_term_row = row; }
-
-  u32 get_term_col() { return m_term_col; }
-  void set_term_col(u32 col) { m_term_col = col; }
-
+  //template<>
+  void printf(const char *s);
+  
+  /*
+   * Numbers:
+   * 1. Print up to the first % sign
+   * 2. Print the number (or whatever)
+   */
+   
+  template<typename T>
+  void printf(const char *s, T* t)
+  {
+    for(; (*s) && (*s) != c_fmt_char; s++) putc(*s);
+    if(*s)
+    {
+      print_int(reinterpret_cast<u32>(t), "0123456789abcdef", false);
+      s++;
+    }
+    for(; (*s); s++) putc(*s);
+  }
+   
+  template<typename T>
+  void printf(const char *s, T t);
+  
   void putentry(char c, u8 color, coord_t x, coord_t y);
   void putc(char c);
   void puts(const char *str);
+  
+protected:
+  u32 m_get_term_row() { return m_term_row; }
+  void m_set_term_row(u32 row) { m_term_row = row; }
 
-  void printf(const char *str);
-
-
-  /*
-   %[flags][width][.precision][length]specifier
-
-  specifier | Output                                             |  Example
-  d or i    | Signed decimal integer                             |  392
-  u         | Unsigned decimal integer                           |  7235
-  o         | Unsigned octal                                     |  610
-  x         | Unsigned hexadecimal integer                       |  7fa
-  X         | Unsigned hexadecimal integer (uppercase)           |  7FA
-  f         | Decimal floating point, lowercase                  |  392.65
-  F         | Decimal floating point, uppercase                  |  392.65
-  e         | Scientific notation (mantissa/exponent), lowercase |  3.9265e+2
-  E         | Scientific notation (mantissa/exponent), uppercase |  3.9265E+2
-  g         | Use the shortest representation: %e or %f          |  392.65
-  G         | Use the shortest representation: %E or %F          |  392.65
-  a         | Hexadecimal floating point, lowercase              |  -0xc.90fep-2
-  A         | Hexadecimal floating point, uppercase              |  -0XC.90FEP-2
-  c         | Character                                          |  a
-  s         | String of characters                               |  sample
-  p         | Pointer address                                    |  b8000000
-  n         | Nothing printed.                                   |
-  The corresponding argument must be a pointer to a signed int.
-  The number of characters written so far is stored in the pointed location.  
-  % A % followed by another % character will write a single % to the stream.  %
-   */
-  /*
-  template<typename Head, typename ... Tail>
-  void printf(const char *str, Head head, Tail ... tail)
-  {
-
-  }
-  */
-
-  template<typename Head>
-  void printf(const char *str, Head *head)
-  {
-    // convert a pointer to a u32 or u64, where appropriate
-  #if defined(__i386)
-    printf(str, (u32)head);
-  #elif defined(__x86_64__)
-    printf(str, (u64)head);
-  #endif
-  }
-
-  template<typename Head>
-  void printf(const char *str, Head head)
-  {
-    while(*str)
-    {
-      if(*str == '%')
-      {
-        str++;
-
-        bool left_justify = false;
-        bool force_polarity_sign = false;
-        bool hash_flag = false;
-        char pad_char = ' ';
-        u32 width = 0;
-        u32 precision = 0;
-
-        bool flags_done = false;
-        while(!flags_done)
-        {
-          // get if it's a flag
-          switch(*str)
-          {
-            case '-':
-              left_justify = true;
-              str++;
-              break;
-            case '+':
-              force_polarity_sign = true;
-              str++;
-              break;
-            // maybe ignore the "space case", it makes parsing hard :(
-            //case ' ':
-            case '#':
-              hash_flag = true;
-              str++;
-              break;
-            case '0':
-              pad_char = '0';
-              str++;
-              break;
-            default:
-              flags_done = true;
-              break;
-          }
-        }
-
-        bool width_done = false;
-        while(!width_done)
-        {
-          // TODO : handle '*' case
-          if(isdigit(*str))
-          {
-            width *= 10;
-            width += (*str) - '0';
-            // only advance on digits
-            str++;
-          }
-          else
-          {
-            width_done = true;
-          }
-        }
-
-        bool precision_done = false;
-        // the . indicates that we're starting with a precision argument
-        if(*str == '.')
-        {
-          str++;
-          while(!precision_done)
-          {
-            if(isdigit(*str))
-            {
-              precision *= 10;
-              precision += (*str) - '0';
-              str++;
-            }
-            else
-            {
-              precision_done = true;
-            }
-          }
-        }
-
-        switch(*str)
-        {
-        case 'd': // decimal number
-          str++;
-          print_int(head, "0123456789");
-          break;
-        case 'p': // pointer
-        case 'x': // hex
-          str++;
-          print_int(head, "0123456789abcdef", false);
-          break;
-        case 'X': // hex, upper case
-          str++;
-          print_int(head, "0123456789ABCDEF", false);
-          break;
-        default:
-          putc('%');
-          putc(*str++);
-          break;
-        }
-      }
-      else
-      {
-        putc(*str++);
-      }
-
-    }
-  }
+  u32 m_get_term_col() { return m_term_col; }
+  void m_set_term_col(u32 col) { m_term_col = col; }
 
   /**
    * Prints an integer (as opposed to a pointer). This will print the negative sign (if applicable)
@@ -269,6 +141,7 @@ private:
   u32 m_term_col;
   u8 m_term_color;
   u16 *m_term_buffer;
+  const char c_fmt_char = '%';
 
 private:
   friend class Singleton<Terminal>;
