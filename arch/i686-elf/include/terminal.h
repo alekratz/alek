@@ -76,7 +76,7 @@ public:
   {
     printf(s, h);
     // uh... get the location of the format character
-    for(; *s && (*s) == c_fmt_char; s++);
+    for(; *s && (*s) != c_fmt_char; s++);
     printf(s, tail ...);
   }
   
