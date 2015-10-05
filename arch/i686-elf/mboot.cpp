@@ -29,8 +29,8 @@ void debug_flag_info(const MBInfo *mb_info)
 
   if(HAS_FLAG(mb_info->flags, MBOOT_MEM))
   {
-    TERMINST().printf("mem_lower: %\n", mb_info->mem_lower * 1024);
-    TERMINST().printf("mem_upper: %\n", mb_info->mem_upper * 1024);
+    TERMINST().printf("mem_lower: %kb\n", mb_info->mem_lower);
+    TERMINST().printf("mem_upper: %kb\n", mb_info->mem_upper);
   }
   else
   {
