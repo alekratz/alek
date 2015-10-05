@@ -75,6 +75,11 @@ void Terminal::printf(const char *str)
   puts(str);
 }
 
+void Terminal::scroll(u32 amount)
+{
+  // TODO  
+}
+
 //template<typename Head, typename ... Tail>
 //void Terminal::printf(const char *str, Head& head, Tail& ... tail);
 

@@ -107,6 +107,7 @@ public:
   void putc(char c);
   void puts(const char *str);
   
+  void scroll(u32 amount=1);
 protected:
   u32 m_get_term_row() { return m_term_row; }
   void m_set_term_row(u32 row) { m_term_row = row; }
