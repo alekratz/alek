@@ -25,6 +25,7 @@ extern "C"
 
   void halt()
   {
+    TERMINST().printf("HALTING");
     while(1);
   }
 
@@ -37,6 +38,15 @@ extern "C"
     }
 
     debug_flag_info(mb_info);
+
+    // get the high amount of memory we've got
+    u32 mem_upper = mb_info->mem_upper;
+    // make sure it's at least 1MB
+    if(mem_upper < 1024)
+    {
+      TERMINST().printf("error: I need at least 1024 kb of memory to run\n");
+      halt();
+    }
 
     while(1);
   }
