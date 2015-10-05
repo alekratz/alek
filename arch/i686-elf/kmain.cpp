@@ -172,6 +172,7 @@ extern "C"
     }
     else
       term_inst.puts("-- vbe fields unavailable\n");
+
     while(1);
   }
 }
