@@ -30,9 +30,10 @@ extern "C"
 
   void kmain(u32 eax, MBInfo* mb_info)
   {
+    Terminal& term_inst = Terminal::get_instance();
     if(eax != 0x2BADB002)
     {
-      //term_inst.printf("Invalid multiboot EAX value: %\n", eax);
+      term_inst.printf("Invalid multiboot EAX value: %\n", eax);
       halt();
     }
 
