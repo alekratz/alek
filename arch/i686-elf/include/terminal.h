@@ -30,6 +30,8 @@
 #define VGA_WIDTH 80
 #define VGA_HEIGHT 25
 
+#define TERMINST Terminal::get_instance
+
 enum VgaColor
 {
   BLACK = 0,
