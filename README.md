@@ -15,6 +15,9 @@ make TARGET=x86
 That wasn't so hard! :)
 
 #Building for Raspberry Pi
+
+*Development for the Raspberry Pi has been put on the backburner for now.*
+
 You must have an arm-none-eabi compiler at your disposal - this is bare metal, after all.
 
 After you have your toolchain built, the following steps will build the kernel and generate an image ready for the SD card:

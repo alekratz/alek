@@ -20,6 +20,13 @@
 #include "terminal.h"
 #include "mboot.h"
 
+#include <types.h>
+
+// Number of threads we're going to be running for now
+#define THREAD_COUNT 8
+// Minimum memory required (kb)
+#define MIN_MEM 1024 
+
 extern "C"
 {
 
@@ -39,13 +46,22 @@ extern "C"
 
     debug_flag_info(mb_info);
 
-    // get the high amount of memory we've got
-    u32 mem_upper = mb_info->mem_upper;
+    size_t mem_total = mb_info->mem_upper - mb_info->mem_lower;
     // make sure it's at least 1MB
-    if(mem_upper < 1024)
+    if(mem_total < MIN_MEM)
     {
-      TERMINST().printf("error: I need at least 1024 kb of memory to run\n");
+      TERMINST().printf("error: I need at least % kb of memory to run", MIN_MEM);
       halt();
+    }
+
+    TERMINST().printf("Available memory for me: % kb\n", mem_total);
+
+    // Divy up the memory
+    size_t stack_size = mem_total / THREAD_COUNT;
+    TERMINST().printf("Using stack size of % kb", stack_size);
+
+    for(s32 i = 0; i < THREAD_COUNT; i++)
+    {
     }
 
     while(1);
