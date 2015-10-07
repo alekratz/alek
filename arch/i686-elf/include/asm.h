@@ -33,6 +33,10 @@
  *	@(#)asm.h	5.5 (Berkeley) 5/7/91
  */
 
+/*
+ * I have made minor changes to this file. Thanks to BSD for this one.
+ */
+
 #ifndef _I386_ASM_H_
 #define _I386_ASM_H_
 
