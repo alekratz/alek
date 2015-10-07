@@ -28,6 +28,16 @@
 // Minimum memory required (kb)
 #define MIN_MEM 1024_kb
 
+#define LOGO \
+"      db      `7MMF'      `7MM\"\"\"YMM  `7MMF' `YMM' \n" \
+"     ;MM:       MM          MM    `7    MM   .M'   \n" \
+"    ,V^MM.      MM          MM   d      MM .d\"     \n" \
+"   ,M  `MM      MM          MMmmMM      MMMMM.     \n" \
+"   AbmmmqMA     MM      ,   MM   Y  ,   MM  VMA    \n" \
+"  A'     VML    MM     ,M   MM     ,M   MM   `MM.  \n" \
+".AMA.   .AMMA..JMMmmmmMMM .JMMmmmmMMM .JMML.   MMb.\n"
+
+
 extern "C"
 {
 
@@ -45,13 +55,14 @@ extern "C"
       halt();
     }
 
-    debug_flag_info(mb_info);
+    TERMINST().printf(LOGO);
+    //debug_flag_info(mb_info);
 
     size_t mem_total = mb_info->mem_upper - mb_info->mem_lower;
     // make sure it's at least 1MB
     if(mem_total < MIN_MEM)
     {
-      TERMINST().printf("error: I need at least % kb of memory to run", static_cast<u64>(MIN_MEM));
+      TERMINST().printf("error: I need at least % kb of memory to run\n", static_cast<u64>(MIN_MEM));
       halt();
     }
 
