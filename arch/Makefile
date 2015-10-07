@@ -38,7 +38,7 @@ $(BUILD_DIR)/%.o: $(ARCH)/%.cpp | $(OBJ_DIRS)
 
 $(BUILD_DIR)/%.o: $(ARCH)/%.s | $(OBJ_DIRS)
 	@echo [ AS ] $<
-	@$(AS) $(AS_FLAGS) $< -o $@
+	$(AS) $(AS_FLAGS) $< -o $@
 
 $(OBJ_DIRS):
 	mkdir -p $(OBJ_DIRS)

@@ -20,6 +20,7 @@
 ifeq ($(TARGET),x86)
 	export ARCH=i686-elf
 	CXX_FLAGS+=-nostdinc -nostdinc++
+  AS_FLAGS+=-nostdinc -nostdinc++
 	LD_FLAGS+=-nostdlib -nodefaultlibs
 else ifeq ($(TARGET),rpi)
 	export ARCH=arm-none-eabi
@@ -51,6 +52,7 @@ export CXX_FLAGS+=-I$(TOP)/libc/libc/include -I$(TOP)/libc/libm/include \
 	-std=c++14 \
 	-ffreestanding -fno-builtin -fno-rtti -fno-exceptions -nostartfiles -O$(O_LEVEL) -c \
 	-Wall -MP -MMD
+export AS_FLAGS+=
 export LD_FLAGS+=-nostartfiles -O2 -L$(BUILD_DIR)/libc -lc -lm -lgcc
 export CXX=$(ARCH)-g++
 export AS=$(ARCH)-as
@@ -65,7 +67,7 @@ $(IMAGE): check-arch $(ELF)
 	@echo [ OBJCOPY ] $(IMAGE)
 	@$(OBJCOPY) $(ELF) -O binary $(IMAGE)
 
-$(ELF): arch core arch/$(ARCH)/link.ld
+$(ELF): arch core libs arch/$(ARCH)/link.ld
 	@echo == linking $(ELF)
 	@echo [ LD ] $(ELF)
 	@$(CXX) $(O_FILES) -T arch/$(ARCH)/link.ld -o $(ELF) $(LD_FLAGS)
@@ -79,13 +81,15 @@ libs:
 core: libs $(CORE_SRC_FILES)
 	@echo == building core
 	@$(MAKE) -C core BUILD_DIR=../$(BUILD_DIR)/core DEP_FILES="$(CORE_DEP_FILES)" \
-		CXX_FLAGS="$(CXX_FLAGS) -I$(TOP)/core/include -I$(TOP)/arch/$(ARCH)/include"
+		CXX_FLAGS="$(CXX_FLAGS) -I$(TOP)/core/include -I$(TOP)/arch/$(ARCH)/include" \
+    AS_FLAGS="$(AS_FLAGS) -I$(TOP)/core/include -I$(TOP)/arch/$(ARCH)/include"
 
 .PHONY: arch
 arch: libs $(ARCH_SRC_FILES)
 	@echo == building $(ARCH)
 	@$(MAKE) -C arch BUILD_DIR=../$(BUILD_DIR)/arch DEP_FILES="$(ARCH_DEP_FILES)" \
-		CXX_FLAGS="$(CXX_FLAGS) -I$(TOP)/core/include -I$(TOP)/arch/$(ARCH)/include"
+		CXX_FLAGS="$(CXX_FLAGS) -I$(TOP)/core/include -I$(TOP)/arch/$(ARCH)/include" \
+    AS_FLAGS="$(AS_FLAGS) -I$(TOP)/core/include -I$(TOP)/arch/$(ARCH)/include"
 
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
