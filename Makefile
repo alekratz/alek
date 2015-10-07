@@ -19,7 +19,7 @@
 
 ifeq ($(TARGET),x86)
 	export ARCH=i686-elf
-	CXX_FLAGS+=-nostdinc -nostdinc++
+	CXX_FLAGS+=-nostdinc -nostdinc++ -fext-numeric-literals
   AS_FLAGS+=-nostdinc -nostdinc++
 	LD_FLAGS+=-nostdlib -nodefaultlibs
 else ifeq ($(TARGET),rpi)
