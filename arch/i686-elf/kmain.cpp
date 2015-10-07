@@ -20,12 +20,13 @@
 #include "terminal.h"
 #include "mboot.h"
 
+#include <sizes.h>
 #include <types.h>
 
 // Number of threads we're going to be running for now
 #define THREAD_COUNT 8
 // Minimum memory required (kb)
-#define MIN_MEM 1024 
+#define MIN_MEM 1024_kb
 
 extern "C"
 {
@@ -50,7 +51,7 @@ extern "C"
     // make sure it's at least 1MB
     if(mem_total < MIN_MEM)
     {
-      TERMINST().printf("error: I need at least % kb of memory to run", MIN_MEM);
+      TERMINST().printf("error: I need at least % kb of memory to run", static_cast<size_t>(MIN_MEM));
       halt();
     }
 
