@@ -38,6 +38,7 @@ typedef uint64_t            uintmax_t;
 
 typedef float               f32;
 typedef double              f64;
+typedef long double         f128;
 
 typedef uint8_t       u8;
 typedef int8_t        s8;
