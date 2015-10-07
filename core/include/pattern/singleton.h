@@ -33,6 +33,12 @@ public:
     static T instance;
     return instance;
   }
+
+  static const T& get_const_instance()
+  {
+    static T instance;
+    return instance;
+  }
 };
 
 #endif /* ALEK_SINGLETON_H */
