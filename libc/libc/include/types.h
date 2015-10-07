@@ -69,7 +69,7 @@ typedef s32 result_t;
 #define R_FAIL (-1)
 
 // size_t
-typedef u32 size_t;
+typedef u64 size_t;
 
 // coordinate type
 typedef u32 coord_t;
