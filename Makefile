@@ -51,7 +51,7 @@ export CXX_FLAGS+=-I$(TOP)/libc/libc/include -I$(TOP)/libc/libm/include \
 	-std=c++14 \
 	-ffreestanding -fno-builtin -fno-rtti -fno-exceptions -nostartfiles -O$(O_LEVEL) -c \
 	-Wall -MP -MMD
-export LD_FLAGS+=-nostartfiles -O2 -L$(BUILD_DIR)/libc -lc -lm
+export LD_FLAGS+=-nostartfiles -O2 -L$(BUILD_DIR)/libc -lc -lm -lgcc
 export CXX=$(ARCH)-g++
 export AS=$(ARCH)-as
 export OBJCOPY=$(ARCH)-objcopy

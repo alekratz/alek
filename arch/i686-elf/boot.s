@@ -21,7 +21,7 @@
 /* Constants used for creating a multiboot header */
 .set ALIGN,   1 << 0              /* align loaded modules on page boundaries */
 .set MEMINFO, 1 << 1              /* provide memory map */
-.set FLAGS,   ALIGN | MEMINFO     /* multiboot 'flag' field */
+.set FLAGS,   ALIGN               /* multiboot 'flag' field */
 .set MAGIC,   0x1BADB002          /* 'magic number' lets bootloader find the header */
 .set CHECKSUM, -(MAGIC + FLAGS)   /* checksum of above */
 
@@ -31,16 +31,6 @@
 .long MAGIC
 .long FLAGS
 .long CHECKSUM
-header_addr:
-.long 0
-load_addr:
-.long 0
-load_end_addr:
-.long 0
-bss_end_addr:
-.long 0
-entry_addr:
-.long 0
 
 /* Set up the stack */
 .section bootstrap_stack, "aw", @nobits
@@ -55,11 +45,10 @@ stack_top:
 start:
   /* Set %esp */
   movl $stack_top, %esp
-  push entry_addr
-  push bss_end_addr
-  push load_end_addr
-  push load_addr
-  push header_addr
+  
+  push %ebx
+  push %eax
+
   /* Jump into the kernel */
   call kmain
   /* After the kernel exits, be sure to call __cxa_finalize */

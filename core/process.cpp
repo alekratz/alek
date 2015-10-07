@@ -17,11 +17,17 @@
  * along with Alek's Little Endian Kernel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __ALEK_LIBC
-#define __ALEK_LIBC
+#include "process.h"
 
-#include <types.h>
+Process::Process(u16 id)
+  : m_id(id)
+  , m_state(ProcessState::Embryo)
+  , m_mem_start(nullptr)
+  , m_mem_size(0)
+{
+}
 
-size_t strlen(const char* c);
+Process::~Process()
+{
 
-#endif
+}

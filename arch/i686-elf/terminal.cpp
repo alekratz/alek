@@ -57,6 +57,7 @@ void Terminal::putc(char c)
 new_line:
         m_term_col = 0;
         if((++m_term_row) == VGA_HEIGHT)
+          // TODO : scroll up
           m_term_row = 0;
       }
       break;
@@ -68,6 +69,14 @@ void Terminal::puts(const char *str)
   while(*str)
     putc(*str++);
 }
+
+void Terminal::printf(const char *str)
+{
+  puts(str);
+}
+
+//template<typename Head, typename ... Tail>
+//void printf(const char *str, Head& head, Tail& ... tail);
 
 u8 make_color(VgaColor fg, VgaColor bg)
 {
