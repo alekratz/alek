@@ -17,7 +17,17 @@
  * along with Alek's Little Endian Kernel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef __ASSEMBLY__
+#define __ASSEMBLY__
+#endif
+
 #include "asm.h"
 
-/* ENTRY(outb) */
+outb:
+  pushl %ebp
+  movl %esp, %ebp
+  movl 8  (%ebp), %eax  /* port */
+  movl 8+4(%ebp), %edx  /* value */
+  outb %al,%dx
+  popl %ebp
 
