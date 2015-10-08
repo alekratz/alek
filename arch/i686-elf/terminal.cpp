@@ -58,7 +58,8 @@ new_line:
         m_term_col = 0;
         if((++m_term_row) == VGA_HEIGHT)
           // TODO : scroll up
-          m_term_row = 0;
+          scroll(1);
+          //m_term_row = 0;
       }
       break;
   }
@@ -77,7 +78,27 @@ void Terminal::printf(const char *str)
 
 void Terminal::scroll(u32 amount)
 {
-  // TODO  
+  const u16 BLANK = make_vga_entry(' ', m_term_color);
+  while(amount--)
+  {
+    // move everything up one line
+    for(size_t row = 0; row < VGA_HEIGHT - 1; row++)
+    {
+      for(size_t col = 0; col < VGA_WIDTH; col++)
+      {
+        coord_t dest_index = row * VGA_WIDTH + col;
+        coord_t src_index = (row + 1) * VGA_WIDTH + col;
+        m_term_buffer[dest_index] = m_term_buffer[src_index];
+      }
+    }
+    // write a completely blank line at the end
+    for(size_t col = 0; col < VGA_WIDTH; col++)
+    {
+      coord_t index = (VGA_HEIGHT - 1) * VGA_WIDTH + col;
+      m_term_buffer[index] = BLANK;
+    }
+  }
+  m_term_row = VGA_HEIGHT - 1;
 }
 
 //template<typename Head, typename ... Tail>
