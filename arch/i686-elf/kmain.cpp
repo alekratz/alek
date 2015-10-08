@@ -62,7 +62,7 @@ extern "C"
     // make sure it's at least 1MB
     if(mem_total < MIN_MEM)
     {
-      TERMINST().printf("error: I need at least % kb of memory to run\n", static_cast<u64>(MIN_MEM));
+      TERMINST().printf("error: I need at least % kb of memory to run\n", static_cast<u64>(MIN_MEM.as<kb>()));
       halt();
     }
 
