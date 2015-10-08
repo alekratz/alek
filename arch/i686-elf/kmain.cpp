@@ -20,6 +20,7 @@
 #include "terminal.h"
 #include "mboot.h"
 
+#include <version.h>
 #include <sizes.h>
 #include <types.h>
 
@@ -56,6 +57,7 @@ extern "C"
     }
 
     TERMINST().printf(LOGO);
+    TERMINST().printf(VERSION_STR "\n");
     //debug_flag_info(mb_info);
 
     size_t mem_total = mb_info->mem_upper - mb_info->mem_lower;
@@ -70,6 +72,7 @@ extern "C"
 
     // Divy up the memory
     size_t stack_size = mem_total / THREAD_COUNT;
+    TERMINST().printf("I have the capability to run % threads\n", THREAD_COUNT);
     TERMINST().printf("Using stack size of % kb", stack_size);
 
     for(s32 i = 0; i < THREAD_COUNT; i++)

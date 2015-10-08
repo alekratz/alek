@@ -43,6 +43,10 @@ ARCH_O_FILES:=$(patsubst arch/$(ARCH)/%.cpp,build/arch/%.o,\
 ARCH_DEP_FILES:=$(ARCH_O_FILES:%.o=%.d)
 O_FILES=$(CORE_O_FILES) $(ARCH_O_FILES)
 BUILD_DIR=build
+VERSION_MAJOR=0
+VERSION_MINOR=0
+VERSION_REVISION=1
+VERSION_TAG=proto
 
 # Optimization level
 O_LEVEL=2
@@ -51,7 +55,9 @@ export TOP:=$(PWD)
 export CXX_FLAGS+=-I$(TOP)/libc/libc/include -I$(TOP)/libc/libm/include \
 	-std=c++14 \
 	-ffreestanding -fno-builtin -fno-rtti -fno-exceptions -nostartfiles -O$(O_LEVEL) -c \
-	-Wall -MP -MMD
+	-Wall -MP -MMD \
+	-DVERSION_MAJOR=$(VERSION_MAJOR) -DVERSION_MINOR=$(VERSION_MINOR) \
+	-DVERSION_REVISION=$(VERSION_REVISION) -DVERSION_TAG=$(VERSION_TAG)
 export AS_FLAGS+=
 export LD_FLAGS+=-nostartfiles -O2 -L$(BUILD_DIR)/libc -lc -lm -lgcc
 export CXX=$(ARCH)-g++
