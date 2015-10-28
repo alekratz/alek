@@ -30,11 +30,11 @@
 volatile void put32(addr_t addr, u32 val);
 volatile u32  get32(addr_t addr);
 
-template<typename T>
-inline T *memset(T *s, s32 c, u32 n)
+extern "C" inline void *memset(void *s, s32 c, u32 n)
 {
+  u8 *a = reinterpret_cast<u8*>(s);
   for(u32 i = 0; i < n ; i++)
-    s[i] = c;
+    a[i] = c;
   return s;
 }
 
