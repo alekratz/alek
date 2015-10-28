@@ -18,16 +18,16 @@
 # 
 
 # Generic libc library
-LIBC_SRC_FILES:=$(shell find libc -type f -name \*.s) \
+LIBC_SRC_FILES:=$(shell find libc -type f -name \*.S) \
 	$(shell find libc -type f -name \*.cpp)
 LIBC_O_FILES:=$(patsubst libc/%.cpp,$(BUILD_DIR)/libc/%.o,\
-	$(patsubst libc/%.s,$(BUILD_DIR)/libc/%.o,$(LIBC_SRC_FILES)))
+	$(patsubst libc/%.S,$(BUILD_DIR)/libc/%.o,$(LIBC_SRC_FILES)))
 LIBC_DEP_FILES:=$(LIBC_O_FILES:%.o=%.d)
 # Mathematics library
-LIBM_SRC_FILES:=$(shell find libm -type f -name \*.s) \
+LIBM_SRC_FILES:=$(shell find libm -type f -name \*.S) \
 	$(shell find libm -type f -name \*.cpp)
 LIBM_O_FILES:=$(patsubst libm/%.cpp,$(BUILD_DIR)/libm/%.o,\
-	$(patsubst libm/%.s,$(BUILD_DIR)/libm/%.o,$(LIBM_SRC_FILES)))
+	$(patsubst libm/%.S,$(BUILD_DIR)/libm/%.o,$(LIBM_SRC_FILES)))
 LIBM_DEP_FILES:=$(LIBM_O_FILES:%.o=%.d)
 
 print-%: ; @echo $*=$($*)

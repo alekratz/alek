@@ -18,9 +18,9 @@
 # 
 
 CXX_FILES=$(shell find . -type f -name \*.cpp)
-ASM_FILES=$(shell find . -type f -name \*.s)
+ASM_FILES=$(shell find . -type f -name \*.S)
 OBJS=$(CXX_FILES:%.cpp=$(BUILD_DIR)/%.o) \
-	$(ASM_FILES:%.s=$(BUILD_DIR)/%.o)
+	$(ASM_FILES:%.S=$(BUILD_DIR)/%.o)
 OBJ_DIRS=$(sort $(dir $(OBJS)))
 
 print-%: ; @echo $*=$($*)
@@ -33,7 +33,7 @@ endif
 
 all: $(OBJS)
 
-$(BUILD_DIR)/%.o: %.s | $(OBJ_DIRS)
+$(BUILD_DIR)/%.o: %.S | $(OBJ_DIRS)
 	@echo [ AS ] $<
 	@$(AS) $(AS_FLAGS) $< -fpic -o $@
 

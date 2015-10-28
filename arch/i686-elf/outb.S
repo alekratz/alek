@@ -23,6 +23,8 @@
 
 #include "asm.h"
 
+.global outb
+
 outb:
   pushl %ebp
   movl %esp, %ebp
