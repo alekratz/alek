@@ -19,9 +19,8 @@
 
 ifeq ($(TARGET),x86)
 	export ARCH=i686-elf
-	CXX_FLAGS+=-nostdinc -nostdinc++ -fext-numeric-literals
-  AS_FLAGS+=-nostdinc -nostdinc++
-	LD_FLAGS+=-nostdlib -nodefaultlibs
+	CXX_FLAGS+=
+	LD_FLAGS+=
 else ifeq ($(TARGET),rpi)
 	export ARCH=arm-none-eabi
 	CXX_FLAGS+=-mfpu=vfp -mfloat-abi=hard -march=armv6zk -mtune=arm1176jzf-s
@@ -30,16 +29,16 @@ endif
 IMAGE=kernel.img
 ELF=kernel.elf
 # Core file information, mostly for dependencies
-CORE_SRC_FILES:=$(shell find core -type f -name \*.s) \
+CORE_SRC_FILES:=$(shell find core -type f -name \*.S) \
 	$(shell find core -type f -name \*.cpp)
 CORE_O_FILES:=$(patsubst core/%.cpp,build/core/%.o,\
-	$(patsubst core/%.s,build/core/%.o,$(CORE_SRC_FILES)))
+	$(patsubst core/%.S,build/core/%.o,$(CORE_SRC_FILES)))
 CORE_DEP_FILES:=$(CORE_O_FILES:%.o=%.d)
 # Arch-specific file information, same as above
-ARCH_SRC_FILES:=$(shell find arch/$(ARCH) -type f -name \*.s) \
+ARCH_SRC_FILES:=$(shell find arch/$(ARCH) -type f -name \*.S) \
 	$(shell find arch/$(ARCH) -type f -name \*.cpp)
 ARCH_O_FILES:=$(patsubst arch/$(ARCH)/%.cpp,build/arch/%.o,\
-	$(patsubst arch/$(ARCH)/%.s,build/arch/%.o,$(ARCH_SRC_FILES)))
+	$(patsubst arch/$(ARCH)/%.S,build/arch/%.o,$(ARCH_SRC_FILES)))
 ARCH_DEP_FILES:=$(ARCH_O_FILES:%.o=%.d)
 O_FILES=$(CORE_O_FILES) $(ARCH_O_FILES)
 BUILD_DIR=build
@@ -57,11 +56,17 @@ export CXX_FLAGS+=-I$(TOP)/libc/libc/include -I$(TOP)/libc/libm/include \
 	-ffreestanding -fno-builtin -fno-rtti -fno-exceptions -nostartfiles -O$(O_LEVEL) -c \
 	-Wall -MP -MMD \
 	-DVERSION_MAJOR=$(VERSION_MAJOR) -DVERSION_MINOR=$(VERSION_MINOR) \
-	-DVERSION_REVISION=$(VERSION_REVISION) -DVERSION_TAG=$(VERSION_TAG)
-export AS_FLAGS+=
-export LD_FLAGS+=-nostartfiles -O2 -L$(BUILD_DIR)/libc -lc -lm -lgcc
+	-DVERSION_REVISION=$(VERSION_REVISION) -DVERSION_TAG=$(VERSION_TAG) \
+	-nostdinc -nostdinc++ -fext-numeric-literals
+export AS_FLAGS+=-I$(TOP)/libc/libc/include -I$(TOP)/libc/libm/include \
+	-ffreestanding -fno-builtin -fno-rtti -fno-exceptions -nostartfiles -O$(O_LEVEL) -c \
+	-Wall -MP -MMD \
+	-DVERSION_MAJOR=$(VERSION_MAJOR) -DVERSION_MINOR=$(VERSION_MINOR) \
+	-DVERSION_REVISION=$(VERSION_REVISION) -DVERSION_TAG=$(VERSION_TAG) \
+	-nostdinc -nostdinc++
+export LD_FLAGS+=-nostartfiles -O2 -L$(BUILD_DIR)/libc -lc -lm -lgcc -nostdlib -nodefaultlibs
 export CXX=$(ARCH)-g++
-export AS=$(ARCH)-as
+export AS=$(ARCH)-gcc
 export OBJCOPY=$(ARCH)-objcopy
 
 print-%: ; @echo $*=$($*)
