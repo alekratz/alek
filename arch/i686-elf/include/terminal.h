@@ -29,6 +29,10 @@
 
 #define VGA_WIDTH 80
 #define VGA_HEIGHT 25
+#define DEFAULT_COL MKCOL(BLACK, WHITE)
+
+#define MKCOL(fg,bg) (static_cast<u8>(fg | (bg << 4)))
+#define MKVGA(c,col) (c | (static_cast<u16>(col) << 8))
 
 #define TERMINST Terminal::get_instance
 
@@ -108,6 +112,7 @@ public:
   void puts(const char *str);
   
   void scroll(u32 amount=1);
+  void clear(u8 color=DEFAULT_COL);
 protected:
   u32 m_get_term_row() { return m_term_row; }
   void m_set_term_row(u32 row) { m_term_row = row; }
@@ -161,9 +166,5 @@ private:
 private:
   friend class Singleton<Terminal>;
 };
-
-u8 make_color(VgaColor fg, VgaColor bg);
-u16 make_vga_entry(char c, u8 color);
-
 
 #endif /* ALEK_TERMINAL_H */

@@ -28,15 +28,14 @@ Terminal::Terminal()
   , m_term_col(0)
   , m_term_buffer(reinterpret_cast<u16*>(0xB8000))
 {
-  m_term_color = make_color(VgaColor::BLACK, VgaColor::WHITE);
-  u16 entry = make_vga_entry(' ', m_term_color);
-  memset<u16>(m_term_buffer, entry, VGA_WIDTH * VGA_HEIGHT);
+  m_term_color = DEFAULT_COL;
+  clear();
 }
 
 void Terminal::putentry(char c, u8 color, coord_t x, coord_t y)
 {
   const coord_t index = y * VGA_WIDTH + x;
-  m_term_buffer[index] = make_vga_entry(c, color);
+  m_term_buffer[index] = MKVGA(c, color);
 }
 
 void Terminal::putc(char c)
@@ -78,7 +77,7 @@ void Terminal::printf(const char *str)
 
 void Terminal::scroll(u32 amount)
 {
-  const u16 BLANK = make_vga_entry(' ', m_term_color);
+  const u16 BLANK = MKVGA(' ', m_term_color);
   while(amount--)
   {
     // move everything up one line
@@ -99,6 +98,19 @@ void Terminal::scroll(u32 amount)
     }
   }
   m_term_row = VGA_HEIGHT - 1;
+}
+
+void Terminal::clear(u8 color)
+{
+  u16 entry = MKVGA(' ', color);
+  for(coord_t row = 0; row < VGA_HEIGHT; row++)
+  {
+    for(coord_t col = 0; col < VGA_WIDTH; col++)
+    {
+      coord_t index = row * VGA_WIDTH + col;
+      m_term_buffer[index] = entry;
+    }
+  }
 }
 
 //template<typename Head, typename ... Tail>
@@ -211,16 +223,4 @@ void Terminal::printf(const char *s, u64 n)
     s++;
   }
   for(; (*s); s++) putc(*s);
-}
-
-u8 make_color(VgaColor fg, VgaColor bg)
-{
-  return fg | (bg << 4);
-}
-
-u16 make_vga_entry(char c, u8 color)
-{
-  u16 c16 = c;
-  u16 color16 = color;
-  return c16 | (color16 << 8);
 }
