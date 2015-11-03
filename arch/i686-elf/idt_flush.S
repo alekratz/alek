@@ -17,31 +17,19 @@
  * along with Alek's Little Endian Kernel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ALEK_MEM_H
-#define ALEK_MEM_H
-
-/* Arch-specific memory functions */
-#if defined(__arm__)
-#include "arch/mem.h"
+#ifndef __ASSEMBLY__
+#define __ASSEMBLY__
 #endif
 
-#include "types.h"
+#include "asm.h"
 
-volatile void put32(addr_t addr, u32 val);
-volatile u32  get32(addr_t addr);
+/*.global idt_flush*/
+ENTRY(idt_flush)
+  push %ebp
+  mov %esp, %ebp
 
-extern "C" inline void *memset(void *s, s32 c, u32 n)
-{
-  u8 *a = reinterpret_cast<u8*>(s);
-  for(u32 i = 0; i < n ; i++)
-    a[i] = c;
-  return s;
-}
+  mov 8(%ebp), %eax /* move the first arg into the eax register */
+  lidt (%eax) /* load descriptor table */
 
-/**
- * puts a 32 bit integer
- */
-#define P32_I(addr, val) put32(reinterpret_cast<addr_t>(addr), val)
-#define G32_I(addr) get32(reinterpret_cast<addr_t>(addr))
-
-#endif /* ALEK_MEM_H */
+  pop %ebp
+  ret

@@ -19,12 +19,14 @@
 
 #include "terminal.h"
 #include "mboot.h"
+#include "descriptor_tables.h"
 
+#include <version.h>
 #include <sizes.h>
 #include <types.h>
 
 // Number of threads we're going to be running for now
-#define THREAD_COUNT 8
+#define THREAD_COUNT 4
 // Minimum memory required (kb)
 #define MIN_MEM 1024_kb
 
@@ -55,7 +57,12 @@ extern "C"
       halt();
     }
 
+    // Init descriptor tables (GDT and IDT)
+    //init_descriptor_tables();
+
+    TERMINST().clear();
     TERMINST().printf(LOGO);
+    TERMINST().printf("Alek's Little Endian Kernel " VERSION_STR "\n");
     //debug_flag_info(mb_info);
 
     size_t mem_total = mb_info->mem_upper - mb_info->mem_lower;
@@ -63,6 +70,7 @@ extern "C"
     if(mem_total < MIN_MEM)
     {
       TERMINST().printf("error: I need at least % kb of memory to run\n", static_cast<u64>(MIN_MEM.as<kb>()));
+      TERMINST().printf("I found % kb of usable memory\n", mem_total);
       halt();
     }
 
@@ -70,7 +78,8 @@ extern "C"
 
     // Divy up the memory
     size_t stack_size = mem_total / THREAD_COUNT;
-    TERMINST().printf("Using stack size of % kb", stack_size);
+    TERMINST().printf("I have the capability to run % threads\n", THREAD_COUNT);
+    TERMINST().printf("Using stack size of % kb\n", stack_size);
 
     for(s32 i = 0; i < THREAD_COUNT; i++)
     {
