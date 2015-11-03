@@ -60,11 +60,11 @@
 
 f64 __pow64(f64 a, f64 b)
 {
-  bool gt1 = sqrt((a - 1) * (a - 1)) > 1.0;
-  s32 oc = -1,
-    iter = 30;
-  f64 p = 1.0,
-    x, x2, sum_y, sum_x;
+  //bool gt1 = sqrt((a - 1) * (a - 1)) > 1.0;
+  //s32 oc = -1,
+  //  iter = 30;
+  f64 p = 1.0;
+  //  x, x2, sum_y, sum_x;
   if(b == 0 || a == 1)
     return 1.0;
   /* integer case */
