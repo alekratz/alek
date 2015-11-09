@@ -26,7 +26,7 @@ else ifeq ($(TARGET),rpi)
 	CXX_FLAGS+=-mfpu=vfp -mfloat-abi=hard -march=armv6zk -mtune=arm1176jzf-s
 endif
 
-IMAGE=kernel.img
+SYMS=kernel.sym
 ELF=kernel.elf
 # Core file information, mostly for dependencies
 CORE_SRC_FILES:=$(shell find core -type f -name \*.S) \
@@ -57,13 +57,13 @@ export CXX_FLAGS+=-I$(TOP)/libc/libc/include -I$(TOP)/libc/libm/include \
 	-Wall -MP -MMD \
 	-DVERSION_MAJOR=$(VERSION_MAJOR) -DVERSION_MINOR=$(VERSION_MINOR) \
 	-DVERSION_REVISION=$(VERSION_REVISION) -DVERSION_TAG=$(VERSION_TAG) \
-	-nostdinc -nostdinc++ -fext-numeric-literals
+	-nostdinc -nostdinc++ -fext-numeric-literals -g
 export AS_FLAGS+=-I$(TOP)/libc/libc/include -I$(TOP)/libc/libm/include \
 	-ffreestanding -fno-builtin -fno-rtti -fno-exceptions -nostartfiles -O$(O_LEVEL) -c \
 	-Wall -MP -MMD \
 	-DVERSION_MAJOR=$(VERSION_MAJOR) -DVERSION_MINOR=$(VERSION_MINOR) \
 	-DVERSION_REVISION=$(VERSION_REVISION) -DVERSION_TAG=$(VERSION_TAG) \
-	-nostdinc -nostdinc++
+	-nostdinc -nostdinc++ -g
 export LD_FLAGS+=-nostartfiles -O2 -L$(BUILD_DIR)/libc -lc -lm -lgcc -nostdlib -nodefaultlibs
 export CXX=$(ARCH)-g++
 export AS=$(ARCH)-gcc
@@ -71,12 +71,13 @@ export OBJCOPY=$(ARCH)-objcopy
 
 print-%: ; @echo $*=$($*)
 
-all: $(IMAGE)
+all: $(SYMS)
 
-$(IMAGE): check-arch $(ELF)
+$(SYMS): check-arch $(ELF)
 	@echo == copying image
-	@echo [ OBJCOPY ] $(IMAGE)
-	@$(OBJCOPY) $(ELF) -O binary $(IMAGE)
+	@echo [ OBJCOPY ] $(SYMS)
+	@$(OBJCOPY) --only-keep-debug $(ELF) $(SYMS)
+	@strip -g $(ELF)
 
 $(ELF): arch core libs arch/$(ARCH)/link.ld
 	@echo == linking $(ELF)
@@ -119,5 +120,5 @@ test:
 
 .PHONY: clean
 clean:
-	rm -f $(IMAGE) $(ELF) 
+	rm -f $(SYMS) $(ELF) 
 	rm -rf $(BUILD_DIR)
