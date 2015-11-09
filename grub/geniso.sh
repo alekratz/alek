@@ -24,5 +24,6 @@ ISO=alek.iso
 
 rm -f $ISO
 cp ../kernel.elf $BOOT
+cp ../kernel.sym .
 grub-mkrescue -d /usr/lib/grub/i386-pc -o $ISO .
 

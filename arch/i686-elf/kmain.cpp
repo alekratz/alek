@@ -45,8 +45,9 @@ extern "C"
 
   void halt()
   {
-    TERMINST().printf("HALTING");
-    while(1);
+    //TERMINST().printf("HALTING");
+    asm volatile("hlt");
+    //while(1);
   }
 
   void kmain(u32 eax, MBInfo* mb_info)
@@ -58,7 +59,7 @@ extern "C"
     }
 
     // Init descriptor tables (GDT and IDT)
-    //init_descriptor_tables();
+    init_descriptor_tables();
 
     TERMINST().clear();
     TERMINST().printf(LOGO);

@@ -23,7 +23,6 @@
 
 #include "asm.h"
 
-/*.global idt_flush*/
 ENTRY(idt_flush)
   push %ebp
   mov %esp, %ebp
