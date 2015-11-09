@@ -1,3 +1,4 @@
+*.sym
 *.o
 *.elf
 *.img
