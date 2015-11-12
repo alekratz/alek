@@ -9,7 +9,7 @@ struct Registers
   u32 gs, fs, es, ds;
   u32 edi, esi, ebp, esp, ebx, edx, ecx, eax; /* pushed by pusha */
   u32 int_no, err_code;
-  u32 eip, cs, eflags, useresp, ss;
+  u32 eip, cs, eflags; /*, useresp, ss; */
 
   void printall()
   {
@@ -30,8 +30,10 @@ struct Registers
     TERMINST().printf("eip: %\n", eip); 
     TERMINST().printf("cs: %\n", cs); 
     TERMINST().printf("eflags: %\n", eflags); 
+    /*
     TERMINST().printf("ss: %\n", ss); 
     TERMINST().printf("esp: %\n", esp); 
+    */
   }
 };
 

@@ -29,42 +29,7 @@ http://www.osdever.net/bkerndev/Docs/gdt.htm
 
 #include <types.h>
 
-struct gdt_entry
-{
-  u16 limit_low;    // lower 16 bits of the limit
-  u16 base_low;     // lower 16 bits of the base
-  u8  base_mid;     // the next 8 bits of the base
-  u8  access;       // access permissions of this segment
-  u8  granularity;  // 0 = bytes, 1 = kilobytes
-  u8  base_high;    // last 8 bits of the base
-} __attribute__((packed));
-
-struct gdt_ptr
-{
-  u16 limit;    // upper 16 bits of all selector limits
-  u32 base;     // address of the first gdt_entry
-} __attribute__((packed));
-
-// Essential for correct operation of the machine/kernel
-static_assert(sizeof(gdt_entry) == 8, "gdt_entry is not 8 bytes long");
-// This is less essential
-//static_assert(sizeof(gdt_ptr) == 6, "gdt_ptr is not 6 bytes long");
-
-struct idt_entry
-{
-  u16 base_lo;    // lower 16 bits of the address to jump to when this interrupt fires
-  u16 sel;        // kernel segment selector
-  u8  always0;    // this is always zero. x86 logic
-  u8  flags;      // flags (duh)
-  u16 base_hi;    // the upper 16 bits of the address to jump to
-} __attribute__((packed));
-
-struct idt_ptr
-{
-  u16 limit;
-  u32 base;       // Address of the first element in the array
-} __attribute__((packed));
-
-void init_descriptor_tables();
+void init_gdt();
+void init_idt();
 
 #endif /* ALEK_GDT_H */

@@ -47,18 +47,13 @@ extern "C"
 
   void halt()
   {
-    //TERMINST().printf("HALTING");
     asm volatile("hlt");
-    //while(1);
   }
 
   void kmain(u32 eax, MBInfo* mb_info)
   {
     if(eax != 0x2BADB002)
-    {
-      TERMINST().printf("Invalid multiboot EAX value: %\n", eax);
       halt();
-    }
 
     // Init descriptor tables (GDT and IDT)
     //init_descriptor_tables();

@@ -32,16 +32,14 @@ isr_stub:
 /* macro for defining ISRs that have no error code */
 #define ISR_NOERR(n) \
 ENTRY(isr ## n)   \
-  cli           ; \
-  push $0      ; \
-  push $n      ; \
+  pushl $0      ; \
+  pushl $n      ; \
   jmp isr_stub  ;
 
 /* macro for defining ISRs that have do have an error code; this is pushed automatically for us */
 #define ISR_WITHERR(n) \
 ENTRY(isr ## n)\
-  cli           ;\
-  push $n       ;\
+  pushl $n       ;\
   jmp isr_stub  ;
 
 ISR_NOERR(0)
@@ -52,7 +50,8 @@ ISR_NOERR(4)
 ISR_NOERR(5)
 ISR_NOERR(6)
 ISR_NOERR(7)
-ISR_WITHERR(8)
+/* ISR_WITHERR(8) */
+ISR_NOERR(8)
 ISR_NOERR(9)
 ISR_WITHERR(10)
 ISR_WITHERR(11)
