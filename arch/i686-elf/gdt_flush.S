@@ -23,12 +23,7 @@
 
 #include "asm.h"
 
-/*ENTRY(gdt_flush):*/
-.text
-.align 16
-.globl gdt_flush
-.type gdt_flush,@function
-gdt_flush:
+ENTRY(gdt_flush)
   push %ebp
   mov %esp, %ebp
 

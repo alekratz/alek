@@ -39,6 +39,8 @@
 "  A'     VML    MM     ,M   MM     ,M   MM   `MM.  \n" \
 ".AMA.   .AMMA..JMMmmmmMMM .JMMmmmmMMM .JMML.   MMb.\n"
 
+extern void init_gdt();
+extern void init_idt();
 
 extern "C"
 {
@@ -59,7 +61,11 @@ extern "C"
     }
 
     // Init descriptor tables (GDT and IDT)
-    init_descriptor_tables();
+    //init_descriptor_tables();
+    asm volatile("cli ;");
+    init_gdt();
+    init_idt();
+    asm volatile("sti ;");
 
     TERMINST().clear();
     TERMINST().printf(LOGO);

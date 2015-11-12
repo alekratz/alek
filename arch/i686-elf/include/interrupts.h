@@ -3,7 +3,7 @@
 
 #include "register.h"
 
-extern "C" void isr_handler(Registers regs);
+extern "C" void isr_handler(Registers *regs);
 
 extern "C" void isr0 ();
 extern "C" void isr1 ();

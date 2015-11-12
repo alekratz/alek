@@ -2,7 +2,12 @@
 #include "register.h"
 #include "terminal.h"
 
-void isr_handler(Registers regs)
+extern "C" void isr_handler(Registers *regs)
 {
-  TERMINST().printf("unhandled interrupt: %", regs.int_no);
+  static int count = 0;
+  TERMINST().printf("unhandled interrupt: % ", regs->int_no);
+  TERMINST().printf("(%)\n", count++);
+
+  regs->printall();
+  
 }

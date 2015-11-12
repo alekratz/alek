@@ -45,6 +45,7 @@ stack_top:
 start:
   /* Set %esp */
   movl $stack_top, %esp
+  movl %esp, %ebp
   
   push %ebx
   push %eax

@@ -17,7 +17,7 @@ isr_stub:
   mov %ax,%gs
   movl %esp,%eax
   pushl %eax
-  movl isr_handler,%eax
+  leal isr_handler,%eax
   call %eax /* this call preserves the eip */
   popl %eax
   pop %gs
