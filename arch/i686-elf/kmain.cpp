@@ -56,11 +56,8 @@ extern "C"
       halt();
 
     // Init descriptor tables (GDT and IDT)
-    //init_descriptor_tables();
-    asm volatile("cli ;");
     init_gdt();
     init_idt();
-    asm volatile("sti ;");
 
     TERMINST().clear();
     TERMINST().printf(LOGO);

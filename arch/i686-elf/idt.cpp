@@ -32,7 +32,7 @@ extern "C" void idt_flush(const idt_ptr* ptr);
 
 void init_idt()
 {
-  idt_entries_ptr.limit = sizeof(idt_entry) * N_IDT_ENTRIES - 1;
+  idt_entries_ptr.limit = (sizeof(idt_entry) * N_IDT_ENTRIES) - 1;
   idt_entries_ptr.base = reinterpret_cast<u32>(&idt_entries);
 
   memset(&idt_entries, 0, sizeof(idt_entry) * N_IDT_ENTRIES);

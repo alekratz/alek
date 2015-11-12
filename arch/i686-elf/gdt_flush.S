@@ -24,10 +24,7 @@
 #include "asm.h"
 
 ENTRY(gdt_flush)
-  push %ebp
-  mov %esp, %ebp
-
-  mov 8(%ebp), %eax /* move the first arg into the eax register */
+  mov 4(%esp), %eax /* move the first arg into the eax register */
   lgdt (%eax) /* load descriptor table */
 
   mov $0x10, %ax
@@ -37,7 +34,6 @@ ENTRY(gdt_flush)
   mov %ax, %gs
   mov %ax, %ss
 
-  jmp 0f /* far jump */
-0:
-  pop %ebp
+  ljmp $0x8, $flush2 /* far jump */
+flush2:
   ret

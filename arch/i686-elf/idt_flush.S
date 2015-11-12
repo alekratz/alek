@@ -24,11 +24,6 @@
 #include "asm.h"
 
 ENTRY(idt_flush)
-  push %ebp
-  mov %esp, %ebp
-
-  mov 8(%ebp), %eax /* move the first arg into the eax register */
+  mov 4(%esp), %eax /* move the first arg into the eax register */
   lidt (%eax) /* load descriptor table */
-
-  pop %ebp
   ret
