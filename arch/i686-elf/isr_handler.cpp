@@ -4,10 +4,8 @@
 
 extern "C" void isr_handler(Registers *regs)
 {
-  static int count = 0;
-  TERMINST().printf("unhandled interrupt: % ", regs->int_no);
-  TERMINST().printf("(%)\n", count);
-  TERMINST().printf("% ", regs);
+  TERMINST().printf("interrupt % called, dumping registers\n", regs->int_no);
   regs->printall();
-  count++;
+  TERMINST().printf("halting\n");
+  asm volatile("hlt");
 }
