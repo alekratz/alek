@@ -80,6 +80,10 @@ extern "C"
     TERMINST().printf("I have the capability to run % threads\n", THREAD_COUNT);
     TERMINST().printf("Using stack size of % kb\n", stack_size);
 
+    // let's play the divide by zero game
+    TERMINST().printf("Dividing by zero...");
+    int k = 1 / 0;
+
     for(s32 i = 0; i < THREAD_COUNT; i++)
     {
     }
