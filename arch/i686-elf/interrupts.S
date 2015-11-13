@@ -10,23 +10,27 @@ isr_stub:
   push %es
   push %fs
   push %gs
+
   mov $0x10,%ax  /* load kernel ds */
   mov %ax,%ds
   mov %ax,%es
   mov %ax,%fs
   mov %ax,%gs
+
   movl %esp,%eax
   pushl %eax
   leal isr_handler,%eax
-  call %eax /* this call preserves the eip */
-  popl %eax
+  call *%eax /* this call preserves the eip */
+
+  pop %eax
   pop %gs
   pop %fs
   pop %es
   pop %ds
+
   popa
-  add %esp,8
-  sti
+  add $0x8,%esp
+
   iret
 
 /* macro for defining ISRs that have no error code */
@@ -50,8 +54,7 @@ ISR_NOERR(4)
 ISR_NOERR(5)
 ISR_NOERR(6)
 ISR_NOERR(7)
-/* ISR_WITHERR(8) */
-ISR_NOERR(8)
+ISR_WITHERR(8)
 ISR_NOERR(9)
 ISR_WITHERR(10)
 ISR_WITHERR(11)
