@@ -1,7 +1,7 @@
 #include "descriptor_tables.h"
 #include <mem.h>
 
-#define N_GDT_ENTRIES 3
+#define N_GDT_ENTRIES 5
 /**
  * Sets up one GDT entry
  * @param s32 which GDT entry to set up
@@ -45,10 +45,10 @@ void init_gdt()
   gdt_entries_ptr.base = reinterpret_cast<u32>(&gdt_entries);
 
   gdt_set_gate(0, 0, 0, 0, 0); // null segment
-  gdt_set_gate(1, 0, 0xFFFFFFFF, 0x9A, 0xCF);   // kernel code segment
-  gdt_set_gate(2, 0, 0xFFFFFFFF, 0x92, 0xCF);   // kernel data segment
-  //gdt_set_gate(3, 0, 0xFFFFFFFF, 0xFA, 0xCF);   // user mode code segment
-  //gdt_set_gate(4, 0, 0xFFFFFFFF, 0xF2, 0xCF);   // user mode data segment
+  gdt_set_gate(1, 0, 0xFFFFFFFF, 0x9A, 0xCF);   // kernel code segment:     0x08
+  gdt_set_gate(2, 0, 0xFFFFFFFF, 0x92, 0xCF);   // kernel data segment:     0x10
+  gdt_set_gate(3, 0, 0xFFFFFFFF, 0xFA, 0xCF);   // user mode code segment:  0x18
+  gdt_set_gate(4, 0, 0xFFFFFFFF, 0xF2, 0xCF);   // user mode data segment:  0x20
 
   gdt_flush(&gdt_entries_ptr);
 }
