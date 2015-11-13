@@ -43,6 +43,7 @@ stack_top:
 .global start
 .type start, @function
 start:
+  finit
   /* Set %esp */
   movl $stack_top, %esp
   movl %esp, %ebp
