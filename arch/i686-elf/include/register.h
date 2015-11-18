@@ -13,26 +13,26 @@ struct Registers
 
   void printall()
   {
-    TERMINST().printf("gs: %\n", gs); 
-    TERMINST().printf("fs: %\n", fs); 
-    TERMINST().printf("es: %\n", es); 
-    TERMINST().printf("ds: %\n", ds); 
-    TERMINST().printf("edi: %\n", edi); 
-    TERMINST().printf("esi: %\n", esi); 
-    TERMINST().printf("ebp: %\n", ebp); 
-    TERMINST().printf("esp: %\n", esp); 
-    TERMINST().printf("ebx: %\n", ebx); 
-    TERMINST().printf("edx: %\n", edx); 
-    TERMINST().printf("ecx: %\n", ecx); 
-    TERMINST().printf("eax: %\n", eax); 
-    TERMINST().printf("int_no: %\n", int_no); 
-    TERMINST().printf("err_code: %\n", err_code); 
-    TERMINST().printf("eip: %\n", eip); 
-    TERMINST().printf("cs: %\n", cs); 
-    TERMINST().printf("eflags: %\n", eflags); 
+    TERMINST().println("gs: ", gs);
+    TERMINST().println("fs: ", fs);
+    TERMINST().println("es: ", es);
+    TERMINST().println("ds: ", ds);
+    TERMINST().println("edi: ", edi);
+    TERMINST().println("esi: ", esi);
+    TERMINST().println("ebp: ", ebp);
+    TERMINST().println("esp: ", esp);
+    TERMINST().println("ebx: ", ebx);
+    TERMINST().println("edx: ", edx);
+    TERMINST().println("ecx: ", ecx);
+    TERMINST().println("eax: ", eax);
+    TERMINST().println("int_no: ", int_no);
+    TERMINST().println("err_code: ", err_code);
+    TERMINST().println("eip: ", eip);
+    TERMINST().println("cs: ", cs);
+    TERMINST().println("eflags: ", eflags);
     /*
-    TERMINST().printf("ss: %\n", ss); 
-    TERMINST().printf("esp: %\n", esp); 
+    TERMINST().println("ss: ", ss); 
+    TERMINST().println("esp: ", esp); 
     */
   }
 };

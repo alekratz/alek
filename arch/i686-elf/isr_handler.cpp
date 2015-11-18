@@ -4,8 +4,8 @@
 
 extern "C" void isr_handler(Registers *regs)
 {
-  TERMINST().printf("interrupt % called, dumping registers\n", regs->int_no);
+  TERMINST().println("interrupt ", regs->int_no, " called, dumping registers");
   regs->printall();
-  TERMINST().printf("halting\n");
+  TERMINST().println("halting");
   asm volatile("hlt");
 }

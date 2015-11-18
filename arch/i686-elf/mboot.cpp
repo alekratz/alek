@@ -25,81 +25,81 @@
 void debug_flag_info(const MBInfo *mb_info)
 {
   //Terminal& TERMINST() = Terminal::get_instance();
-  TERMINST().printf("flags: %\n", mb_info->flags);
+  TERMINST().println("flags: ", mb_info->flags);
 
   if(HAS_FLAG(mb_info->flags, MBOOT_MEM))
   {
-    TERMINST().printf("mem_lower: %kb\n", mb_info->mem_lower);
-    TERMINST().printf("mem_upper: %kb\n", mb_info->mem_upper);
+    TERMINST().println("mem_lower: ", mb_info->mem_lower, "kb");
+    TERMINST().println("mem_upper: ", mb_info->mem_upper, "kb");
   }
   else
   {
-    TERMINST().puts("-- mem fields unavailable\n");
+    TERMINST().println("-- mem fields unavailable");
   }
   if(HAS_FLAG(mb_info->flags, MBOOT_BOOTDEV))
-    TERMINST().printf("boot_device: %\n", mb_info->boot_device);
+    TERMINST().println("boot_device: ", mb_info->boot_device);
   else
   {
-    TERMINST().puts("-- boot_device field unavailable\n");
+    TERMINST().println("-- boot_device field unavailable");
   }
   if(HAS_FLAG(mb_info->flags, MBOOT_CMDLINE))
-    TERMINST().printf("cmdline: %\n", mb_info->cmdline);
+    TERMINST().println("cmdline: ", mb_info->cmdline);
   else
   {
-    TERMINST().puts("-- cmdline field unavailable\n");
+    TERMINST().println("-- cmdline field unavailable");
   }
   if(HAS_FLAG(mb_info->flags, MBOOT_MODS))
   {
-    TERMINST().printf("mods_count: %\n", mb_info->mods_count);
-    TERMINST().printf("mods_addr: %\n", mb_info->mods_addr);
+    TERMINST().println("mods_count: ", mb_info->mods_count);
+    TERMINST().println("mods_addr: ", mb_info->mods_addr);
   }
   else
   {
-    TERMINST().puts("-- mods fields unavailable\n");
+    TERMINST().println("-- mods fields unavailable");
   }
-  //TERMINST().printf("syms: %\n", syms[mb_info->8]);
+
   if(HAS_FLAG(mb_info->flags, MBOOT_MMAP))
   {
-    TERMINST().printf("mmap_addr: %\n", mb_info->mmap_addr);
-    TERMINST().printf("mmap_length: %\n", mb_info->mmap_length);
+    TERMINST().println("mmap_addr: ", mb_info->mmap_addr);
+    TERMINST().println("mmap_length: ", mb_info->mmap_length);
   }
   else
   {
-    TERMINST().puts("-- mmap fields unavailable\n");
+    TERMINST().println("-- mmap fields unavailable");
   }
 
   if(HAS_FLAG(mb_info->flags, MBOOT_DRIVES))
   {
-    TERMINST().printf("drives_length: %\n", mb_info->drives_length);
-    TERMINST().printf("drives_addr: %\n", mb_info->drives_addr);
+    TERMINST().println("drives_length: ", mb_info->drives_length);
+    TERMINST().println("drives_addr: ", mb_info->drives_addr);
   }
   else
-    TERMINST().puts("-- drives fields unavailable\n");
+    TERMINST().println("-- drives fields unavailable");
 
   if(HAS_FLAG(mb_info->flags, MBOOT_CONFIG_TABLE))
-    TERMINST().printf("config_table: %\n", mb_info->config_table);
+    TERMINST().println("config_table: ", mb_info->config_table);
   else
-    TERMINST().puts("-- config table field unavailable\n");
+    TERMINST().println("-- config table field unavailable");
 
   if(HAS_FLAG(mb_info->flags, MBOOT_BOOT_LOADER_NAME))
-    TERMINST().printf("boot_loader_name: %\n", mb_info->boot_loader_name);
+    TERMINST().println("boot_loader_name: ", mb_info->boot_loader_name);
   else
-    TERMINST().puts("-- boot loader name field unavailable\n");
+    TERMINST().println("-- boot loader name field unavailable");
 
   if(HAS_FLAG(mb_info->flags, MBOOT_APM_TABLE))
-    TERMINST().printf("apm_table: %\n", mb_info->apm_table);
+    TERMINST().println("apm_table: ", mb_info->apm_table);
   else
-    TERMINST().puts("-- apm table field unavailable\n");
+    TERMINST().println("-- apm table field unavailable");
 
   if(HAS_FLAG(mb_info->flags, MBOOT_VBE))
   {
-    TERMINST().printf("vbe_control_info: %\n", mb_info->vbe_control_info);
-    TERMINST().printf("vbe_mode_info: %\n", mb_info->vbe_mode_info);
-    TERMINST().printf("vbe_mode: %\n", mb_info->vbe_mode);
-    TERMINST().printf("vbe_interface_seg: %\n", mb_info->vbe_interface_seg);
-    TERMINST().printf("vbe_interface_off: %\n", mb_info->vbe_interface_off);
-    TERMINST().printf("vbe_interface_len: %\n", mb_info->vbe_interface_len);
+    TERMINST().println("vbe_control_info: ", mb_info->vbe_control_info);
+    TERMINST().println("vbe_mode_info: ", mb_info->vbe_mode_info);
+    TERMINST().println("vbe_mode: ", mb_info->vbe_mode);
+    TERMINST().println("vbe_interface_seg: ", mb_info->vbe_interface_seg);
+    TERMINST().println("vbe_interface_off: ", mb_info->vbe_interface_off);
+    TERMINST().println("vbe_interface_len: ", mb_info->vbe_interface_len);
   }
   else
-    TERMINST().puts("-- vbe fields unavailable\n");
+    TERMINST().println("-- vbe fields unavailable");
 }

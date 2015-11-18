@@ -60,25 +60,25 @@ extern "C"
     init_idt();
 
     TERMINST().clear();
-    TERMINST().printf(LOGO);
-    TERMINST().printf("Alek's Little Endian Kernel " VERSION_STR "\n");
+    TERMINST().println(LOGO);
+    TERMINST().println("Alek's Little Endian Kernel " VERSION_STR);
     //debug_flag_info(mb_info);
 
     size_t mem_total = mb_info->mem_upper - mb_info->mem_lower;
     // make sure it's at least 1MB
     if(mem_total < MIN_MEM)
     {
-      TERMINST().printf("error: I need at least % kb of memory to run\n", static_cast<u64>(MIN_MEM.as<kb>()));
-      TERMINST().printf("I found % kb of usable memory\n", mem_total);
+      TERMINST().println("error: I need at least ", static_cast<u64>(MIN_MEM.as<kb>()), " kb of memory to run");
+      TERMINST().println("I found ", mem_total, " kb of usable memory");
       halt();
     }
 
-    TERMINST().printf("Available memory for me: % kb\n", mem_total);
+    TERMINST().println("Available memory for me: ", mem_total, " kb", mem_total);
 
     // Divy up the memory
     size_t stack_size = mem_total / THREAD_COUNT;
-    TERMINST().printf("I have the capability to run % threads\n", THREAD_COUNT);
-    TERMINST().printf("Using stack size of % kb\n", stack_size);
+    TERMINST().println("I have the capability to run ", THREAD_COUNT, " threads");
+    TERMINST().println("Using stack size of ", stack_size, " kb");
 
     for(s32 i = 0; i < THREAD_COUNT; i++)
     {
@@ -87,3 +87,4 @@ extern "C"
     while(1);
   }
 }
+

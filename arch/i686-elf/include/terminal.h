@@ -71,41 +71,48 @@ private:
 
   /* operations */
 public:
-  //template<>
-  void printf(const char *s);
-  
+  /* This is going to be the new "print" function - similar to printf, but... not */
   template<typename ... T>
-  void printf(const char *s, T ... );
-  
+  void print(T ... );
+
+  template<typename ... T>
+  void println(T ... );
+
   template<typename Head, typename ... Tail>
-  void printf(const char *s, Head h, Tail ... tail)
+  void print(Head head, Tail ... tail)
   {
-    printf(s, h);
-    // uh... get the location of the format character
-    for(; *s && (*s) != c_fmt_char; s++);
-    printf(s, tail ...);
+    print(head);
+    print(tail ... );
   }
-  
-  /*
-   * Numbers:
-   * 1. Print up to the first % sign
-   * 2. Print the number (or whatever)
-   */
-   
-  template<typename T>
-  void printf(const char *s, T* t)
+
+  template<typename Head, typename ... Tail>
+  void println(Head head, Tail ... tail)
   {
-    for(; (*s) && (*s) != c_fmt_char; s++) putc(*s);
-    if(*s)
-    {
-      print_int(reinterpret_cast<u32>(t), "0123456789abcdef", false);
-      s++;
-    }
-    for(; (*s); s++) putc(*s);
+    print(head);
+    print(tail ... );
+    putc('\n');
   }
-   
-  template<typename T>
-  void printf(const char *s, T t);
+
+  template<typename Head>
+  void println(Head head)
+  {
+    print(head);
+    putc('\n');
+  }
+
+  template<typename Head>
+  void print(Head head);
+
+  void print(const char *str)
+  {
+    puts(str);
+  }
+
+  template<typename Head>
+  void print(Head* head)
+  {
+    print_int(reinterpret_cast<u32>(head), "0123456789abcdef", false);
+  }
   
   void putentry(char c, u8 color, coord_t x, coord_t y);
   void putc(char c);
@@ -154,8 +161,6 @@ protected:
     putc(alphabet[(u64)num]);
   }
 
-//  template<typename Head, typename ... Tail>
-//  void printf(const char *str, Head& head, Tail& ... tail);
 private:
   u32 m_term_row;
   u32 m_term_col;

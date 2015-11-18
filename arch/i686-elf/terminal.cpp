@@ -70,11 +70,6 @@ void Terminal::puts(const char *str)
     putc(*str++);
 }
 
-void Terminal::printf(const char *str)
-{
-  puts(str);
-}
-
 void Terminal::scroll(u32 amount)
 {
   const u16 BLANK = MKVGA(' ', m_term_color);
@@ -113,114 +108,51 @@ void Terminal::clear(u8 color)
   }
 }
 
-//template<typename Head, typename ... Tail>
-//void Terminal::printf(const char *str, Head& head, Tail& ... tail);
-
 template<>
-void Terminal::printf(const char *s, const char *t)
+void Terminal::print(s8 n)
 {
-  for(; (*s) && (*s) != c_fmt_char; s++) putc(*s);
-  if(*s)
-  {
-    puts(t);
-    s++;
-  }
-  for(; (*s); s++) putc(*s);
+  print_int(n, "0123456789");
 }
 
 template<>
-void Terminal::printf(const char *s, s8 n)
+void Terminal::print(s16 n)
 {
-  for(; (*s) && (*s) != c_fmt_char; s++) putc(*s);
-  if(*s)
-  {
-    print_int(n, "0123456789");
-    s++;
-  }
-  for(; (*s); s++) putc(*s);
+  print_int(n, "0123456789");
 }
 
 template<>
-void Terminal::printf(const char *s, s16 n)
+void Terminal::print(s32 n)
 {
-  for(; (*s) && (*s) != c_fmt_char; s++) putc(*s);
-  if(*s)
-  {
-    print_int(n, "0123456789");
-    s++;
-  }
-  for(; (*s); s++) putc(*s);
-}
-
-template<>
-void Terminal::printf(const char *s, s32 n)
-{
-  for(; (*s) && (*s) != c_fmt_char; s++) putc(*s);
-  if(*s)
-  {
-    print_int(n, "0123456789");
-    s++;
-  }
-  for(; (*s); s++) putc(*s);
+  print_int(n, "0123456789");
 }
 
 
 template<>
-void Terminal::printf(const char *s, s64 n)
+void Terminal::print(s64 n)
 {
-  for(; (*s) && (*s) != c_fmt_char; s++) putc(*s);
-  if(*s)
-  {
-    print_int(n, "0123456789");
-    s++;
-  }
-  for(; (*s); s++) putc(*s);
+  print_int(n, "0123456789");
 }
 
 template<>
-void Terminal::printf(const char *s, u8 n)
+void Terminal::print(u8 n)
 {
-  for(; (*s) && (*s) != c_fmt_char; s++) putc(*s);
-  if(*s)
-  {
-    print_int(n, "0123456789");
-    s++;
-  }
-  for(; (*s); s++) putc(*s);
+  print_int(n, "0123456789");
 }
 
 template<>
-void Terminal::printf(const char *s, u16 n)
+void Terminal::print(u16 n)
 {
-  for(; (*s) && (*s) != c_fmt_char; s++) putc(*s);
-  if(*s)
-  {
-    print_int(n, "0123456789", false);
-    s++;
-  }
-  for(; (*s); s++) putc(*s);
+  print_int(n, "0123456789", false);
 }
 
 template<>
-void Terminal::printf(const char *s, u32 n)
+void Terminal::print(u32 n)
 {
-  for(; (*s) && (*s) != c_fmt_char; s++) putc(*s);
-  if(*s)
-  {
-    print_int(n, "0123456789", false);
-    s++;
-  }
-  for(; (*s); s++) putc(*s);
+  print_int(n, "0123456789", false);
 }
 
 template<>
-void Terminal::printf(const char *s, u64 n)
+void Terminal::print(u64 n)
 {
-  for(; (*s) && (*s) != c_fmt_char; s++) putc(*s);
-  if(*s)
-  {
-    print_int(n, "0123456789", false);
-    s++;
-  }
-  for(; (*s); s++) putc(*s);
+  print_int(n, "0123456789", false);
 }
