@@ -43,6 +43,7 @@ stack_top:
 .global start
 .type start, @function
 start:
+  /* Do this to make DOS processors happy */
   finit
   /* Set %esp */
   movl $stack_top, %esp
