@@ -19,8 +19,8 @@
 
 CXX_FILES=$(shell find $(ARCH) -type f -name \*.cpp)
 ASM_FILES=$(shell find $(ARCH) -type f -name \*.S)
-OBJS=$(CXX_FILES:$(ARCH)/%.cpp=$(BUILD_DIR)/%.o) \
-	$(ASM_FILES:$(ARCH)/%.S=$(BUILD_DIR)/%.o)
+OBJS=$(CXX_FILES:$(ARCH)/%=$(BUILD_DIR)/%.o) \
+	$(ASM_FILES:$(ARCH)/%=$(BUILD_DIR)/%.o)
 OBJ_DIRS=$(sort $(dir $(OBJS)))
 
 print-%: ; @echo "$*=$($*)"
@@ -32,11 +32,11 @@ endif
 all: $(OBJS)
 
 -include $(DEP_FILES)
-$(BUILD_DIR)/%.o: $(ARCH)/%.cpp | $(OBJ_DIRS)
+$(BUILD_DIR)/%.cpp.o: $(ARCH)/%.cpp | $(OBJ_DIRS)
 	@echo [ CXX ] $<
 	@$(CXX) $(CXX_FLAGS) $< -o $@
 
-$(BUILD_DIR)/%.o: $(ARCH)/%.S | $(OBJ_DIRS)
+$(BUILD_DIR)/%.S.o: $(ARCH)/%.S | $(OBJ_DIRS)
 	@echo [ AS ] $<
 #@$(CPP) $(AS_FLAGS) $< | $(AS) $(AS_FLAGS) -o $@
 	@$(AS) $(AS_FLAGS) $< -o $@

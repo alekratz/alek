@@ -31,5 +31,8 @@ http://www.osdever.net/bkerndev/Docs/gdt.htm
 
 void init_gdt();
 void init_idt();
+void init_irq();
+
+void idt_set_gate(u8, u32, u16, u8);
 
 #endif /* ALEK_GDT_H */

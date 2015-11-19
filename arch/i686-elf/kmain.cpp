@@ -84,18 +84,10 @@ extern "C"
     TERMINST().println("Available memory for me: ", mem_total, " kb");
 
     // Divy up the memory
-    size_t stack_size = mem_total / THREAD_COUNT;
+    size_t mem_size = mem_total / THREAD_COUNT;
     TERMINST().println("I have the capability to run ", THREAD_COUNT, " threads");
-    TERMINST().println("Using stack size of ", stack_size, " kb");
-
-    // Let's make a new... thing
-    addr_t my_blob = kmalloc(100);
-    TERMINST().println("Here is a blob of memory I just allocated on the kernel heap: ", my_blob);
-    TERMINST().println("Now I am freeing this blob");
-    kfree(my_blob);
-
-    addr_t another_blob = kmalloc(100);
-    TERMINST().println("Another blob, allocated again: ", another_blob);
+    TERMINST().println("Using memory size of ", mem_size, " kb");
+    TERMINST().println("(", mem_size / 2, " kb for heap and stack)");
 
     while(1);
   }

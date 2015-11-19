@@ -23,9 +23,7 @@
 
 #include "asm.h"
 
-.global outb
-
-outb:
+ENTRY(outb)
   pushl %ebp
   movl %esp, %ebp
   movl 8  (%ebp), %eax  /* port */
