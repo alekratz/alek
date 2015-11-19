@@ -1,19 +1,22 @@
 #include "heap.h"
 #include "kernel.h"
+#include "sizes.h"
 
 #include <mem.h>
 
+typedef HeapNode<4096> KHeapNode;
+
 extern addr_t kern_heap_start;
 extern size_t kern_heap_size;
-extern HeapNode kern_heap_info_start;
-extern HeapNode kern_heap_info_end;
+extern KHeapNode kern_heap_info_start;
+extern KHeapNode kern_heap_info_end;
 
-static HeapNode *heap_info_start_ptr = &kern_heap_info_start;
-static HeapNode *heap_info_end_ptr = &kern_heap_info_end;
+static KHeapNode *heap_info_start_ptr = &kern_heap_info_start;
+static KHeapNode *heap_info_end_ptr = &kern_heap_info_end;
 static addr_t heap_start = &kern_heap_start;
 
 static bool kmalloc_init();
-static HeapNode *alloc_kern_heapnode();
+static KHeapNode *alloc_kern_KHeapNode();
 
 /**
  * Initializes the kernel heap
@@ -39,7 +42,7 @@ static bool kmalloc_init()
  * Finds the first instance of an invalid heap pointer.
  * @return the address of a heap node that does not have the valid bit set.
  */
-static HeapNode *alloc_kern_heapnode()
+static KHeapNode *alloc_kern_KHeapNode()
 {
   auto heap_ptr = heap_info_start_ptr;
   for(; heap_ptr < heap_info_end_ptr; heap_ptr++)
@@ -75,7 +78,7 @@ addr_t kmalloc(size_t amount)
   if(amount < heap_ptr->size)
   {
     auto old_next = heap_ptr->next;
-    auto new_next = alloc_kern_heapnode();
+    auto new_next = alloc_kern_KHeapNode();
     if(new_next == nullptr)
       panic("kmalloc: could not allocate heap node");
 

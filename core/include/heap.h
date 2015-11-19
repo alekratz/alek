@@ -6,18 +6,21 @@
 /**
  * A doubly-linked list that keeps track of heap usage
  */
+template<u64 G>
 class HeapNode
 {
 public:
-  HeapNode(HeapNode *next = nullptr, HeapNode *prev = nullptr, addr_t start = nullptr, size_t size = 0)
+  const static u64 Granularity = G;
+
+public:
+  HeapNode(HeapNode *next = nullptr, addr_t start = nullptr, size_t size = 0)
     : next(next)
-    , prev(prev)
     , start(start)
-    , size(size)
+    , size(size * G)
     , used(false) { }
 
 public:
-  HeapNode *next, *prev;
+  HeapNode *next;
   addr_t start;
   size_t size;
   bool used;
