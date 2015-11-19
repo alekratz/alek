@@ -17,6 +17,8 @@
 # along with Alek's Little Endian Kernel.  If not, see <http://www.gnu.org/licenses/>.
 # 
 
+export TOP:=$(PWD)
+
 ifeq ($(TARGET),x86)
 	export ARCH=i686-elf
 	CXX_FLAGS+=
@@ -33,13 +35,13 @@ CORE_SRC_FILES:=$(shell find core -type f -name \*.S) \
 	$(shell find core -type f -name \*.cpp)
 CORE_O_FILES:=$(patsubst core/%.cpp,build/core/%.o,\
 	$(patsubst core/%.S,build/core/%.o,$(CORE_SRC_FILES)))
-CORE_DEP_FILES:=$(CORE_O_FILES:%.o=%.d)
+CORE_DEP_FILES:=$(CORE_O_FILES:%.o=$(TOP)/%.d)
 # Arch-specific file information, same as above
 ARCH_SRC_FILES:=$(shell find arch/$(ARCH) -type f -name \*.S) \
 	$(shell find arch/$(ARCH) -type f -name \*.cpp)
 ARCH_O_FILES:=$(patsubst arch/$(ARCH)/%.cpp,build/arch/%.o,\
 	$(patsubst arch/$(ARCH)/%.S,build/arch/%.o,$(ARCH_SRC_FILES)))
-ARCH_DEP_FILES:=$(ARCH_O_FILES:%.o=%.d)
+ARCH_DEP_FILES:=$(ARCH_O_FILES:%.o=$(TOP)/%.d)
 O_FILES=$(CORE_O_FILES) $(ARCH_O_FILES)
 BUILD_DIR=build
 VERSION_MAJOR=0
@@ -50,7 +52,6 @@ VERSION_TAG=proto
 # Optimization level
 O_LEVEL=2
 
-export TOP:=$(PWD)
 export CXX_FLAGS+=-I$(TOP)/libc/libc/include -I$(TOP)/libc/libm/include \
 	-std=c++14 \
 	-ffreestanding -fno-builtin -fno-rtti -fno-exceptions -nostartfiles -O$(O_LEVEL) -c \
