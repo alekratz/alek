@@ -24,6 +24,8 @@
 #include <version.h>
 #include <sizes.h>
 #include <types.h>
+#include <heap.h>
+#include <kernel.h>
 
 // Number of threads we're going to be running for now
 #define THREAD_COUNT 4
@@ -50,6 +52,12 @@ extern "C"
     asm volatile("hlt");
   }
 
+  void panic(const char *reason)
+  {
+    TERMINST().println("Kernel panicked: ", reason);
+    halt();
+  }
+
   void kmain(u32 eax, MBInfo* mb_info)
   {
     if(eax != 0x2BADB002)
@@ -73,16 +81,19 @@ extern "C"
       halt();
     }
 
-    TERMINST().println("Available memory for me: ", mem_total, " kb", mem_total);
+    TERMINST().println("Available memory for me: ", mem_total, " kb");
 
     // Divy up the memory
     size_t stack_size = mem_total / THREAD_COUNT;
     TERMINST().println("I have the capability to run ", THREAD_COUNT, " threads");
     TERMINST().println("Using stack size of ", stack_size, " kb");
 
-    for(s32 i = 0; i < THREAD_COUNT; i++)
-    {
-    }
+    // Let's make a new... thing
+    addr_t my_blob = kmalloc(100);
+    addr_t another_blob = kmalloc(100);
+
+    TERMINST().println("Here is a blob of memory I just allocated on the kernel heap: ", my_blob);
+    TERMINST().println("Another blob: ", another_blob);
 
     while(1);
   }

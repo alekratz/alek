@@ -17,6 +17,9 @@
 * along with Alek's Little Endian Kernel.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#define KERN_HEAP_SIZE 16384
+#define KERN_STACK_SIZE 16384
+
 #define ASM_FILE 1
 /* Constants used for creating a multiboot header */
 .set ALIGN,   1 << 0              /* align loaded modules on page boundaries */
@@ -34,9 +37,23 @@
 
 /* Set up the stack */
 .section bootstrap_stack, "aw", @nobits
-stack_bottom:
-.skip 16384 /* 16 KB */
-stack_top:
+kern_heap_info_start:
+.skip KERN_HEAP_SIZE * 20 /* 16 * 20 KB */
+kern_heap_info_end:
+
+kern_heap_start:
+.skip KERN_HEAP_SIZE /* 16 KB */
+kern_heap_end:
+
+kern_stack_bottom:
+.skip KERN_STACK_SIZE /* 16 KB */
+kern_stack_top:
+
+/* export the heap start and stack bottom */
+.globl kern_heap_start
+.globl kern_stack_top
+.globl kern_heap_info_end
+.globl kern_heap_info_start
 
 /* text section */
 .section .text
@@ -46,7 +63,7 @@ start:
   /* Do this to make DOS processors happy */
   finit
   /* Set %esp */
-  movl $stack_top, %esp
+  movl $kern_stack_top, %esp
   movl %esp, %ebp
   
   push %ebx
@@ -63,3 +80,10 @@ start:
   hlt
 .Lhang:
   jmp .Lhang
+
+.section .text
+kern_heap_size: .long KERN_HEAP_SIZE
+kern_stack_size: .long KERN_STACK_SIZE
+
+.globl kern_heap_size
+.globl kern_stack_size

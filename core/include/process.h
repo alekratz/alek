@@ -46,23 +46,38 @@ public:
   void set_state(ProcessState state) { m_state = state; }
 
   addr_t mem_start() const { return m_mem_start; }
-  void set_mem_start(addr_t mem_start) { m_mem_start = mem_start; }
+  void set_mem_start(addr_t mem_start)
+  {
+    if(m_state != ProcessState::Embryo)
+    {
+      // print an error message and exit
+      return;
+    }
+    m_mem_start = mem_start;
+    calculate_heap_and_stack();
+  }
 
   size_t get_mem_size() const { return m_mem_size; }
   addr_t get_kstack() const { return m_kstack; }
   Process* get_parent() const { return m_parent; }
 
 private:
+  void calculate_heap_and_stack();
+
+private:
   u16           m_id;         // process id
   ProcessState  m_state;      // process state
+
   addr_t        m_mem_start;  // memory start address
   size_t        m_mem_size;   // memory size
+
+  addr_t        m_stack_start;// stack start
+  addr_t        m_heap_start; // heap start
+
   addr_t        m_kstack;     // bottom of the kernel stack
   Process*      m_parent;     // parent of this process
   //File*         m_files[NFILES]; // open files
   
 };
-
-
 
 #endif

@@ -31,3 +31,9 @@ Process::~Process()
 {
 
 }
+
+void Process::calculate_heap_and_stack()
+{
+  m_heap_start = m_stack_start = reinterpret_cast<addr_t>(
+    reinterpret_cast<u32>(m_mem_start) + (m_mem_size / 2));
+}
