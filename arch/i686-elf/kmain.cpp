@@ -90,10 +90,12 @@ extern "C"
 
     // Let's make a new... thing
     addr_t my_blob = kmalloc(100);
-    addr_t another_blob = kmalloc(100);
-
     TERMINST().println("Here is a blob of memory I just allocated on the kernel heap: ", my_blob);
-    TERMINST().println("Another blob: ", another_blob);
+    TERMINST().println("Now I am freeing this blob");
+    kfree(my_blob);
+
+    addr_t another_blob = kmalloc(100);
+    TERMINST().println("Another blob, allocated again: ", another_blob);
 
     while(1);
   }

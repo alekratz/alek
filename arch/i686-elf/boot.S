@@ -17,9 +17,6 @@
 * along with Alek's Little Endian Kernel.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#define KERN_HEAP_SIZE 16384
-#define KERN_STACK_SIZE 16384
-
 #define ASM_FILE 1
 /* Constants used for creating a multiboot header */
 .set ALIGN,   1 << 0              /* align loaded modules on page boundaries */
@@ -35,10 +32,13 @@
 .long FLAGS
 .long CHECKSUM
 
+.set KERN_HEAP_SIZE, 16384
+.set KERN_STACK_SIZE, 16384
+
 /* Set up the stack */
 .section bootstrap_stack, "aw", @nobits
 kern_heap_info_start:
-.skip KERN_HEAP_SIZE * 16 / 1024 /* 16 * 16 KB */
+.skip (KERN_HEAP_SIZE * 16) / 128 /* 16 * 16 KB */
 kern_heap_info_end:
 
 kern_heap_start:
@@ -81,9 +81,9 @@ start:
 .Lhang:
   jmp .Lhang
 
-.section .text
-kern_heap_size: .long KERN_HEAP_SIZE
-kern_stack_size: .long KERN_STACK_SIZE
+.section .data
+kern_heap_size: .quad KERN_HEAP_SIZE
+kern_stack_size: .quad KERN_STACK_SIZE
 
 .globl kern_heap_size
 .globl kern_stack_size

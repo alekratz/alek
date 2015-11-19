@@ -4,7 +4,7 @@
 
 #include <mem.h>
 
-typedef HeapNode<1024> KHeapNode;
+typedef HeapNode<128> KHeapNode;
 
 extern addr_t kern_heap_start;
 extern size_t kern_heap_size;
@@ -32,7 +32,7 @@ static bool kmalloc_init()
   memset(heap_info_start_ptr, 0, sizeof(heap_info_start_ptr) * kern_heap_size);
 
   heap_info_start_ptr[0].start = heap_start;
-  heap_info_start_ptr[0].size = kern_heap_size;
+  heap_info_start_ptr[0].size = kern_heap_size / KHeapNode::Granularity;
   heap_info_start_ptr[0].valid = true;
 
   return kmalloc_ready = true;
@@ -105,7 +105,8 @@ extern "C" void kfree(addr_t addr)
 
   // something went wrong here, but we are forgiving. kind of.
   if(heap_ptr == nullptr)
-    return;
+    panic("kfree: tried to free a non-allocated pointer");
+
   heap_ptr->used = false;
   // absorb forward
 }
