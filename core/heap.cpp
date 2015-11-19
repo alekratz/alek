@@ -67,15 +67,15 @@ extern "C" addr_t kmalloc(size_t amount)
   if(!kmalloc_ready && (kmalloc_ready = true, !kmalloc_init()))
     panic("kmalloc: could not initialize kmalloc");
 
+  size_t blocks = (amount / KHeapNode::Granularity) + 1;
   // Find the first fit
   auto heap_ptr = heap_info_start_ptr;
-  for(; heap_ptr && !(heap_ptr->size >= amount && !heap_ptr->used); heap_ptr = heap_ptr->next);
+  for(; heap_ptr && !(heap_ptr->size >= blocks && !heap_ptr->used); heap_ptr = heap_ptr->next);
 
   // There were no spaces large enough to allocate our heap
   if(heap_ptr == nullptr)
     panic("kmalloc: no memory available to allocate");
 
-  size_t blocks = (amount / KHeapNode::Granularity) + 1;
   if(blocks < heap_ptr->size)
   {
     auto old_next = heap_ptr->next;
