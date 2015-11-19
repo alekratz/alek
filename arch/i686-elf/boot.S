@@ -38,7 +38,7 @@
 /* Set up the stack */
 .section bootstrap_stack, "aw", @nobits
 kern_heap_info_start:
-.skip KERN_HEAP_SIZE * 20 /* 16 * 20 KB */
+.skip KERN_HEAP_SIZE * 16 / 1024 /* 16 * 16 KB */
 kern_heap_info_end:
 
 kern_heap_start:

@@ -4,7 +4,7 @@
 
 #include <mem.h>
 
-typedef HeapNode<4096> KHeapNode;
+typedef HeapNode<1024> KHeapNode;
 
 extern addr_t kern_heap_start;
 extern size_t kern_heap_size;
@@ -16,7 +16,7 @@ static KHeapNode *heap_info_end_ptr = &kern_heap_info_end;
 static addr_t heap_start = &kern_heap_start;
 
 static bool kmalloc_init();
-static KHeapNode *alloc_kern_KHeapNode();
+static KHeapNode *alloc_kern_heapnode();
 
 /**
  * Initializes the kernel heap
@@ -42,7 +42,7 @@ static bool kmalloc_init()
  * Finds the first instance of an invalid heap pointer.
  * @return the address of a heap node that does not have the valid bit set.
  */
-static KHeapNode *alloc_kern_KHeapNode()
+static KHeapNode *alloc_kern_heapnode()
 {
   auto heap_ptr = heap_info_start_ptr;
   for(; heap_ptr < heap_info_end_ptr; heap_ptr++)
@@ -75,22 +75,23 @@ addr_t kmalloc(size_t amount)
   if(heap_ptr == nullptr)
     panic("kmalloc: no memory available to allocate");
 
-  if(amount < heap_ptr->size)
+  size_t blocks = (amount / KHeapNode::Granularity) + 1;
+  if(blocks < heap_ptr->size)
   {
     auto old_next = heap_ptr->next;
-    auto new_next = alloc_kern_KHeapNode();
+    auto new_next = alloc_kern_heapnode();
     if(new_next == nullptr)
       panic("kmalloc: could not allocate heap node");
 
     heap_ptr->next = new_next;
-    new_next->prev = heap_ptr;
     new_next->next = old_next;
     new_next->used = false;
-    new_next->size = heap_ptr->size - amount;
-    new_next->start = AS_ADDR(AS_U32(heap_ptr->start) + amount);
+    new_next->size = heap_ptr->size - blocks;
+    new_next->start = AS_ADDR(AS_U32(heap_ptr->start) + 
+      (blocks * KHeapNode::Granularity));
   }
 
-  heap_ptr->size = amount;
+  heap_ptr->size = blocks;
   heap_ptr->used = true;
 
   return heap_ptr->start;
