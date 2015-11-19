@@ -33,14 +33,12 @@ ELF=kernel.elf
 # Core file information, mostly for dependencies
 CORE_SRC_FILES:=$(shell find core -type f -name \*.S) \
 	$(shell find core -type f -name \*.cpp)
-CORE_O_FILES:=$(patsubst core/%.cpp,build/core/%.o,\
-	$(patsubst core/%.S,build/core/%.o,$(CORE_SRC_FILES)))
+CORE_O_FILES:=$(patsubst core/%,build/core/%.o,$(CORE_SRC_FILES))
 CORE_DEP_FILES:=$(CORE_O_FILES:%.o=$(TOP)/%.d)
 # Arch-specific file information, same as above
 ARCH_SRC_FILES:=$(shell find arch/$(ARCH) -type f -name \*.S) \
 	$(shell find arch/$(ARCH) -type f -name \*.cpp)
-ARCH_O_FILES:=$(patsubst arch/$(ARCH)/%.cpp,build/arch/%.o,\
-	$(patsubst arch/$(ARCH)/%.S,build/arch/%.o,$(ARCH_SRC_FILES)))
+ARCH_O_FILES:=$(patsubst arch/$(ARCH)/%,build/arch/%.o,$(ARCH_SRC_FILES))
 ARCH_DEP_FILES:=$(ARCH_O_FILES:%.o=$(TOP)/%.d)
 O_FILES=$(CORE_O_FILES) $(ARCH_O_FILES)
 BUILD_DIR=build
