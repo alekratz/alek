@@ -61,7 +61,7 @@ static KHeapNode *alloc_kern_heapnode()
  * @param  amount the amount of memory to allocate.
  * @return        a pointer to the memory allocated, or nullptr if no memory was allocated.
  */
-addr_t kmalloc(size_t amount)
+extern "C" addr_t kmalloc(size_t amount)
 {
   static bool kmalloc_ready = false;
   if(!kmalloc_ready && (kmalloc_ready = true, !kmalloc_init()))
@@ -95,4 +95,17 @@ addr_t kmalloc(size_t amount)
   heap_ptr->used = true;
 
   return heap_ptr->start;
+}
+
+extern "C" void kfree(addr_t addr)
+{
+  // find which block this address belongs to
+  auto heap_ptr = heap_info_start_ptr;
+  for(; heap_ptr && heap_ptr->start != addr; heap_ptr = heap_ptr->next);
+
+  // something went wrong here, but we are forgiving. kind of.
+  if(heap_ptr == nullptr)
+    return;
+  heap_ptr->used = false;
+  // absorb forward
 }

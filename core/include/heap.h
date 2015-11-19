@@ -37,6 +37,7 @@ public:
   addr_t malloc(size_t amount);
 };
 
-addr_t kmalloc(size_t amount);
+extern "C" addr_t kmalloc(size_t amount);
+extern "C" void kfree(addr_t addr);
 
 #endif
