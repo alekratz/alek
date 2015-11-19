@@ -87,21 +87,24 @@ $(ELF): arch core libs arch/$(ARCH)/link.ld
 .PHONY: libs
 libs:
 	@echo == building libs
-	@$(MAKE) -C libc BUILD_DIR=../$(BUILD_DIR)/libc
+	@$(MAKE) -C libc BUILD_DIR=../$(BUILD_DIR)/libc \
+		--no-print-directory 
 
 .PHONY: core
 core: libs $(CORE_SRC_FILES)
 	@echo == building core
 	@$(MAKE) -C core BUILD_DIR=../$(BUILD_DIR)/core DEP_FILES="$(CORE_DEP_FILES)" \
 		CXX_FLAGS="$(CXX_FLAGS) -I$(TOP)/core/include -I$(TOP)/arch/$(ARCH)/include" \
-    AS_FLAGS="$(AS_FLAGS) -I$(TOP)/core/include -I$(TOP)/arch/$(ARCH)/include"
+    AS_FLAGS="$(AS_FLAGS) -I$(TOP)/core/include -I$(TOP)/arch/$(ARCH)/include" \
+    --no-print-directory 
 
 .PHONY: arch
 arch: libs $(ARCH_SRC_FILES)
 	@echo == building $(ARCH)
 	@$(MAKE) -C arch BUILD_DIR=../$(BUILD_DIR)/arch DEP_FILES="$(ARCH_DEP_FILES)" \
 		CXX_FLAGS="$(CXX_FLAGS) -I$(TOP)/core/include -I$(TOP)/arch/$(ARCH)/include" \
-    AS_FLAGS="$(AS_FLAGS) -I$(TOP)/core/include -I$(TOP)/arch/$(ARCH)/include"
+    AS_FLAGS="$(AS_FLAGS) -I$(TOP)/core/include -I$(TOP)/arch/$(ARCH)/include" \
+    --no-print-directory 
 
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
