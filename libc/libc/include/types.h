@@ -77,5 +77,6 @@ typedef u32 coord_t;
 
 typedef void* addr_t;
 #define AS_ADDR(a) (reinterpret_cast<addr_t>(a))
+#define AS_U32(a) (reinterpret_cast<u32>(a))
 
 #endif /* ALEK_TYPES_H */

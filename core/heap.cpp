@@ -84,7 +84,7 @@ addr_t kmalloc(size_t amount)
     new_next->next = old_next;
     new_next->used = false;
     new_next->size = heap_ptr->size - amount;
-    new_next->start = heap_ptr->start + amount;
+    new_next->start = AS_ADDR(AS_U32(heap_ptr->start) + amount);
   }
 
   heap_ptr->size = amount;
