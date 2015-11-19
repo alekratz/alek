@@ -17,6 +17,7 @@ static addr_t heap_start = &kern_heap_start;
 
 static bool kmalloc_init();
 static KHeapNode *alloc_kern_heapnode();
+static void absorb_forward(KHeapNode *head);
 
 /**
  * Initializes the kernel heap
@@ -54,6 +55,23 @@ static KHeapNode *alloc_kern_heapnode()
     }
   }
   return nullptr;
+}
+
+/**
+ * Takes all of the de-allocated memory blocks in front of this memory block, and
+ * adds their size to ours.
+ * @param head the memory block that was just de-allocated
+ */
+static void absorb_forward(KHeapNode *head)
+{
+  if(!head->next || head->next->used)
+    return;
+
+  for(auto next_ptr = head->next; next_ptr && !next_ptr->used; next_ptr = next_ptr->next)
+  {
+    next_ptr->valid = false;
+    head->size += next_ptr->size;
+  }
 }
 
 /**
@@ -109,4 +127,5 @@ extern "C" void kfree(addr_t addr)
 
   heap_ptr->used = false;
   // absorb forward
+  absorb_forward(heap_ptr);
 }
