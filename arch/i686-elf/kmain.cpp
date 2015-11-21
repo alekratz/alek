@@ -68,11 +68,13 @@ extern "C"
     init_irq();
     init_clock();
     init_keyboard();
+    init_kheap();
     asm volatile("sti");
 
     TERMINST().clear();
     TERMINST().println(LOGO);
     TERMINST().println("Alek's Little Endian Kernel " VERSION_STR);
+    TERMINST().println("ALEK is ready to roll.");
     //debug_flag_info(mb_info);
 
     size_t mem_total = mb_info->mem_upper - mb_info->mem_lower;
@@ -84,13 +86,10 @@ extern "C"
       halt();
     }
 
-    TERMINST().println("Available memory for me: ", mem_total, " kb");
+    TERMINST().println("mem avail: ", mem_total, " kb");
 
     // Divy up the memory
     size_t mem_size = mem_total / THREAD_COUNT;
-    TERMINST().println("I have the capability to run ", THREAD_COUNT, " threads");
-    TERMINST().println("Using memory size of ", mem_size, " kb");
-    TERMINST().println("(", mem_size / 2, " kb for heap and stack)");
 
     while(1);
   }
