@@ -6,9 +6,14 @@
   push %es ; \
   push %fs ; \
   push %gs ; \
-  mov %esp, %eax ; \
+  mov $0x10,%ax ; \
+  mov %ax,%ds ; \
+  mov %ax,%es ; \
+  mov %ax,%fs ; \
+  mov %ax,%gs ; \
+  mov %esp,%eax ; \
   push %eax ; \
-  leal irq ## x ## _handler, %eax ; \
+  leal irq ## x ## _handler,%eax ; \
   call *%eax ; \
   pop %eax ; \
   pop %gs ; \
@@ -16,14 +21,14 @@
   pop %es ; \
   pop %ds ; \
   popa ; \
-  add $0x8, %esp ; \
+  add $0x8,%esp ; \
   iret
 
 #define IRQ(x) \
   ENTRY(irq ## x) ; \
   cli ; \
-  push 0 ; \
-  push x ; \
+  pushl $0 ; \
+  pushl x ; \
   IRQ_COMMON_STUB(x)
 
 IRQ(0)

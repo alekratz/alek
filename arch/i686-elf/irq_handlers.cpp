@@ -1,11 +1,12 @@
 #include "register.h"
 #include "outb.h"
+#include "clock.h"
 
 extern "C" {
 
 void irq0_handler(Registers* regs)
 {
-
+  clock_handler(regs);
 }
 
 void irq1_handler(Registers* regs)

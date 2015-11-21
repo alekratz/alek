@@ -16,3 +16,26 @@
  * You should have received a copy of the GNU General Public License
  * along with Alek's Little Endian Kernel.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <kernel.h>
+#include <types.h>
+#include "clock.h"
+#include "outb.h"
+#include "register.h"
+#include "terminal.h"
+
+static u16 clock_ticks = 0;
+
+extern "C" void set_clock_hz(u16 hz)
+{
+  u16 divisor = 1193180 / hz;
+  outb(0x43, 0x36); // command mode
+  outb(0x40, divisor & 0xFF);
+  outb(0x40, (divisor >> 8) & 0xFF);
+}
+
+extern "C" void clock_handler(Registers *regs)
+{
+  clock_ticks++;
+  if(clock_ticks % 18 == 0)
+    TERMINST().println("One second has passed");
+}

@@ -36,16 +36,16 @@ void init_idt()
   memset(&idt_entries, 0, sizeof(idt_entry) * N_IDT_ENTRIES);
 
   // Set up the actual idt using our functions, and flush it to disk
-  idt_set_gate(0, AS_U32(isr0), 0x08, 0x8E);
-  idt_set_gate(1, AS_U32(isr1), 0x08, 0x8E);
-  idt_set_gate(2, AS_U32(isr2), 0x08, 0x8E);
-  idt_set_gate(3, AS_U32(isr3), 0x08, 0x8E);
-  idt_set_gate(4, AS_U32(isr4), 0x08, 0x8E);
-  idt_set_gate(5, AS_U32(isr5), 0x08, 0x8E);
-  idt_set_gate(6, AS_U32(isr6), 0x08, 0x8E);
-  idt_set_gate(7, AS_U32(isr7), 0x08, 0x8E);
-  idt_set_gate(8, AS_U32(isr8), 0x08, 0x8E);
-  idt_set_gate(9, AS_U32(isr9), 0x08, 0x8E);
+  idt_set_gate(0,  AS_U32(isr0),  0x08, 0x8E);
+  idt_set_gate(1,  AS_U32(isr1),  0x08, 0x8E);
+  idt_set_gate(2,  AS_U32(isr2),  0x08, 0x8E);
+  idt_set_gate(3,  AS_U32(isr3),  0x08, 0x8E);
+  idt_set_gate(4,  AS_U32(isr4),  0x08, 0x8E);
+  idt_set_gate(5,  AS_U32(isr5),  0x08, 0x8E);
+  idt_set_gate(6,  AS_U32(isr6),  0x08, 0x8E);
+  idt_set_gate(7,  AS_U32(isr7),  0x08, 0x8E);
+  idt_set_gate(8,  AS_U32(isr8),  0x08, 0x8E);
+  idt_set_gate(9,  AS_U32(isr9),  0x08, 0x8E);
   idt_set_gate(10, AS_U32(isr10), 0x08, 0x8E);
   idt_set_gate(11, AS_U32(isr11), 0x08, 0x8E);
   idt_set_gate(12, AS_U32(isr12), 0x08, 0x8E);

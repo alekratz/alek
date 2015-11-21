@@ -16,3 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with Alek's Little Endian Kernel.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+#ifndef ALEK_ARCH_CLOCK_H
+#define ALEK_ARCH_CLOCK_H
+
+#include "register.h"
+
+extern "C" void clock_handler(Registers *regs);
+
+#endif

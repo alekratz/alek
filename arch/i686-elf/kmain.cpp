@@ -30,7 +30,7 @@
 // Number of threads we're going to be running for now
 #define THREAD_COUNT 4
 // Minimum memory required (kb)
-#define MIN_MEM 1024_kb
+#define MIN_MEM 5120_kb
 
 #define LOGO \
 "      db      `7MMF'      `7MM\"\"\"YMM  `7MMF' `YMM' \n" \
@@ -66,6 +66,8 @@ extern "C"
     // Init descriptor tables (GDT and IDT)
     init_gdt();
     init_idt();
+    init_irq();
+    asm volatile("sti");
 
     TERMINST().clear();
     TERMINST().println(LOGO);

@@ -9,7 +9,7 @@ struct Registers
   u32 gs, fs, es, ds;
   u32 edi, esi, ebp, esp, ebx, edx, ecx, eax; /* pushed by pusha */
   u32 int_no, err_code;
-  u32 eip, cs, eflags; /*, useresp, ss; */
+  u32 eip, cs, eflags, useresp, ss;
 
   void printall()
   {
