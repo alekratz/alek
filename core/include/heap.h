@@ -37,6 +37,7 @@ public:
   addr_t malloc(size_t amount);
 };
 
+void init_kheap();
 extern "C" addr_t kmalloc(size_t amount);
 extern "C" void kfree(addr_t addr);
 

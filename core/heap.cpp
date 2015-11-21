@@ -14,30 +14,10 @@ extern KHeapNode kern_heap_info_end;
 static KHeapNode *heap_info_start_ptr = &kern_heap_info_start;
 static KHeapNode *heap_info_end_ptr = &kern_heap_info_end;
 static addr_t heap_start = &kern_heap_start;
+static bool kmalloc_ready = false;
 
-static bool kmalloc_init();
 static KHeapNode *alloc_kern_heapnode();
 static void absorb_forward(KHeapNode *head);
-
-/**
- * Initializes the kernel heap
- * @return whether initialization was successful. Kernel should panic if not.
- */
-static bool kmalloc_init()
-{
-  static bool kmalloc_ready = false;
-  if(kmalloc_ready)
-    panic("kmalloc_init: kmalloc_init called twice");
-
-  // memset the entire kernel heap to zero
-  memset(heap_info_start_ptr, 0, sizeof(heap_info_start_ptr) * kern_heap_size);
-
-  heap_info_start_ptr[0].start = heap_start;
-  heap_info_start_ptr[0].size = kern_heap_size / KHeapNode::Granularity;
-  heap_info_start_ptr[0].valid = true;
-
-  return kmalloc_ready = true;
-}
 
 /**
  * Finds the first instance of an invalid heap pointer.
@@ -75,16 +55,33 @@ static void absorb_forward(KHeapNode *head)
 }
 
 /**
+ * Initializes the kernel heap
+ * @return whether initialization was successful. Kernel should panic if not.
+ */
+void init_kheap()
+{
+  if(kmalloc_ready)
+    panic("kmalloc_init: kmalloc_init called twice");
+
+  // memset the entire kernel heap to zero
+  memset(heap_info_start_ptr, 0, sizeof(heap_info_start_ptr) * kern_heap_size);
+
+  heap_info_start_ptr[0].start = heap_start;
+  heap_info_start_ptr[0].size = kern_heap_size / KHeapNode::Granularity;
+  heap_info_start_ptr[0].valid = true;
+
+  kmalloc_ready = true;
+}
+
+/**
  * Allocates items on the kernel's heap.
  * @param  amount the amount of memory to allocate.
  * @return        a pointer to the memory allocated, or nullptr if no memory was allocated.
  */
 extern "C" addr_t kmalloc(size_t amount)
 {
-  static bool kmalloc_ready = false;
-  if(!kmalloc_ready && (kmalloc_ready = true, !kmalloc_init()))
-    panic("kmalloc: could not initialize kmalloc");
-
+  if(!kmalloc_ready)
+    panic("kmalloc: the heap has not been initialized for utilization by kmalloc");
   size_t blocks = (amount / KHeapNode::Granularity) + 1;
   // Find the first fit
   auto heap_ptr = heap_info_start_ptr;
