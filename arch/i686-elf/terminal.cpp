@@ -49,6 +49,8 @@ void Terminal::putc(char c)
         putentry(' ', m_term_color, m_term_col++, m_term_row);
       while(m_term_col % TERM_TAB_WIDTH);
       break;
+    case 0:
+      return;
     default:
       putentry(c, m_term_color, m_term_col++, m_term_row);
       if(m_term_col == VGA_WIDTH)
