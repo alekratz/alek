@@ -21,6 +21,7 @@
 #include "mboot.h"
 #include "descriptor_tables.h"
 #include "clock.h"
+#include "keyboard.h"
 
 #include <version.h>
 #include <sizes.h>
@@ -66,6 +67,7 @@ extern "C"
     init_idt();
     init_irq();
     init_clock();
+    init_keyboard();
     asm volatile("sti");
 
     TERMINST().clear();

@@ -19,7 +19,7 @@
 #include <kernel.h>
 #include <types.h>
 #include "clock.h"
-#include "outb.h"
+#include "cpu_io.h"
 #include "register.h"
 #include "terminal.h"
 #include "irq.h"

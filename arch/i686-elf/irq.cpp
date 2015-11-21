@@ -1,6 +1,6 @@
 #include "descriptor_tables.h"
 #include "interrupts.h"
-#include "outb.h"
+#include "cpu_io.h"
 
 #include <types.h>
 

@@ -1,5 +1,5 @@
 #include "register.h"
-#include "outb.h"
+#include "cpu_io.h"
 #include "clock.h"
 #include "irq.h"
 
