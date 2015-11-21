@@ -26,8 +26,8 @@
 ENTRY(outb)
   pushl %ebp
   movl %esp, %ebp
-  movl 8  (%ebp), %eax  /* port */
-  movl 8+4(%ebp), %edx  /* value */
-  outb %al,%dx
+  movl 8  (%ebp), %edx  /* port */
+  movl 8+4(%ebp), %eax  /* value */
+  outb %dx
   popl %ebp
-
+  ret
