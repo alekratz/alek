@@ -22,9 +22,12 @@
 #include "outb.h"
 #include "register.h"
 #include "terminal.h"
+#include "irq.h"
 
 static u16 clock_ticks = 0;
+static void clock_handler(Registers *regs);
 
+// kernel.h
 extern "C" void set_clock_hz(u16 hz)
 {
   u16 divisor = 1193180 / hz;
@@ -33,7 +36,13 @@ extern "C" void set_clock_hz(u16 hz)
   outb(0x40, (divisor >> 8) & 0xFF);
 }
 
-extern "C" void clock_handler(Registers *regs)
+void init_clock()
+{
+  // set_clock_hz(100);
+  register_irq_handler(0, clock_handler);
+}
+
+static void clock_handler(Registers *regs)
 {
   clock_ticks++;
   if(clock_ticks % 18 == 0)

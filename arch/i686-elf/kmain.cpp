@@ -20,6 +20,7 @@
 #include "terminal.h"
 #include "mboot.h"
 #include "descriptor_tables.h"
+#include "clock.h"
 
 #include <version.h>
 #include <sizes.h>
@@ -40,9 +41,6 @@
 "   AbmmmqMA     MM      ,   MM   Y  ,   MM  VMA    \n" \
 "  A'     VML    MM     ,M   MM     ,M   MM   `MM.  \n" \
 ".AMA.   .AMMA..JMMmmmmMMM .JMMmmmmMMM .JMML.   MMb.\n"
-
-extern void init_gdt();
-extern void init_idt();
 
 extern "C"
 {
@@ -67,6 +65,7 @@ extern "C"
     init_gdt();
     init_idt();
     init_irq();
+    init_clock();
     asm volatile("sti");
 
     TERMINST().clear();

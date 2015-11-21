@@ -22,6 +22,6 @@
 
 #include "register.h"
 
-extern "C" void clock_handler(Registers *regs);
+void init_clock();
 
 #endif

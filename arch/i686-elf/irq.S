@@ -13,7 +13,7 @@
   mov %ax,%gs ; \
   mov %esp,%eax ; \
   push %eax ; \
-  leal irq ## x ## _handler,%eax ; \
+  leal irq_handler,%eax ; \
   call *%eax ; \
   pop %eax ; \
   pop %gs ; \
@@ -28,7 +28,7 @@
   ENTRY(irq ## x) ; \
   cli ; \
   pushl $0 ; \
-  pushl x ; \
+  pushl $(x+32) ; \
   IRQ_COMMON_STUB(x)
 
 IRQ(0)
