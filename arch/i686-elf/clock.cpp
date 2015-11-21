@@ -45,6 +45,7 @@ void init_clock()
 static void clock_handler(Registers *regs)
 {
   clock_ticks++;
-  if(clock_ticks % 18 == 0)
-    TERMINST().println("One second has passed");
+  //if(clock_ticks % 18 == 0)
+  //  TERMINST().println("One second has passed");
+  // TODO : fun clock things here
 }
